@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form version="1.3" class="lk.jiat.globemed.ui.EditUserDialog" type="org.netbeans.modules.form.forminfo.JDialogForm">
+  <properties>
+    <property name="preferredSize" type="java.awt.Dimension" value="400,260"/>
+  </properties>
+  <components>
+  </components>
+  <layout>
+  </layout>
+</form>

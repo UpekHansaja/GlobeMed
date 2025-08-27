@@ -121,13 +121,16 @@ public class LoginForm extends javax.swing.JFrame {
         Staff staff = staffDao.findByEmail(email);
 
         if (staff != null && staff.getPassword().equals(password)) {
-            JOptionPane.showMessageDialog(this,
-                    "Welcome " + staff.getName() + "!",
-                    "Login Success",
-                    JOptionPane.INFORMATION_MESSAGE);
+//            JOptionPane.showMessageDialog(this,
+//                    "Welcome " + staff.getName() + "!",
+//                    "Login Success",
+//                    JOptionPane.INFORMATION_MESSAGE);
 
             // TODO: Redirect based on role
-            new DashboardForm().setVisible(true);
+//            new DashboardForm(staff).setVisible(true);
+//            this.dispose();
+            // Open role-based dashboard and dispose login form
+            DashboardRouter.openDashboardForStaff(staff);
             this.dispose();
 
         } else {
