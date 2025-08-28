@@ -1,22 +1,12 @@
 package lk.jiat.globemed.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.util.List;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import lk.jiat.globemed.model.Staff;
-import lk.jiat.globemed.report.CSVReportVisitor;
-import lk.jiat.globemed.report.ReportVisitor;
-import lk.jiat.globemed.service.StaffService;
-import lk.jiat.globemed.service.command.*;
+import lk.jiat.globemed.service.SecurityService;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class AdminDashboardForm extends JFrame {
-
-    private final StaffService staffService = new StaffService();
-    private final CommandInvoker invoker = new CommandInvoker();
 
     private Staff currentUser;
 
@@ -25,6 +15,7 @@ public class AdminDashboardForm extends JFrame {
     private JLabel lblTitle;
     private JButton btnLogout;
     private JButton btnProfile;
+    private JButton btnAppointments;
     private JSplitPane mainSplit;
     private JPanel navPanel;
     private JList<String> lstNav;
@@ -34,6 +25,8 @@ public class AdminDashboardForm extends JFrame {
     private JButton btnEditUser;
     private JButton btnRemoveUser;
     private JButton btnGenerateReport;
+
+    private final SecurityService securityService = new SecurityService();
 
     public AdminDashboardForm() {
         initComponents();
@@ -51,94 +44,48 @@ public class AdminDashboardForm extends JFrame {
         setLocationRelativeTo(null);
         initNavList();
 
-        // populate table
-        refreshUsersTable();
+        btnLogout.addActionListener(e -> {
+            dispose();
+            new LoginForm().setVisible(true);
+        });
 
-        btnAddUser.addActionListener(e -> onAddUser());
-        btnEditUser.addActionListener(e -> onEditUser());
-        btnRemoveUser.addActionListener(e -> onDeleteUser());
-        btnGenerateReport.addActionListener(e -> onExportUsersCSV());
-    }
+        btnProfile.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, "Profile: " + (currentUser != null ? currentUser.getName() : "Unknown"));
+        });
 
-    private void refreshUsersTable() {
-        List<Staff> users = staffService.findAll();
-        String[] cols = {"ID", "Name", "Email", "Role"};
-        DefaultTableModel m = new DefaultTableModel(cols, 0) {
-            @Override
-            public boolean isCellEditable(int r, int c) {
-                return false;
+        btnGenerateReport.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, "Generating admin report... (implement ReportService)");
+        });
+
+        btnAddUser.addActionListener(e -> JOptionPane.showMessageDialog(this, "Open Add User dialog (implement)."));
+        btnEditUser.addActionListener(e -> JOptionPane.showMessageDialog(this, "Edit selected user (implement)."));
+        btnRemoveUser.addActionListener(e -> JOptionPane.showMessageDialog(this, "Remove selected user (implement)."));
+
+        lstNav.addListSelectionListener(ev -> {
+            if (!ev.getValueIsAdjusting()) {
+                String sel = lstNav.getSelectedValue();
+                if ("User Management".equals(sel)) {
+                    tabMain.setSelectedIndex(0);
+                } else if ("Reports".equals(sel)) {
+                    tabMain.setSelectedIndex(1);
+                } else if ("System Settings".equals(sel)) {
+                    tabMain.setSelectedIndex(2);
+                }
             }
-        };
-        for (Staff s : users) {
-            String role = s.getRole() != null ? s.getRole().getName() : "";
-            Object[] row = new Object[]{s.getId(), s.getName(), s.getEmail(), role};
-            m.addRow(row);
-        }
-        tblUsers.setModel(m);
-    }
+        });
 
-    private void onAddUser() {
-
-        AddUserDialog dlg = new AddUserDialog(this);
-        dlg.setVisible(true);
-
-        Staff created = dlg.getCreatedStaff();
-
-        if (created != null) {
-            AddUserCommand cmd = new AddUserCommand(staffService, created, currentUser != null ? currentUser.getEmail() : "system");
-            invoker.executeCommand(cmd);
-            refreshUsersTable();
-            JOptionPane.showMessageDialog(this, "User created.");
-        }
-
-    }
-
-    private void onEditUser() {
-
-        System.out.println("Selected user row on edit: " + tblUsers.getSelectedRow());
-        if (tblUsers.getSelectedRow() < 0) {
-            JOptionPane.showMessageDialog(this, "Please select a user first", "User Not Selected", JOptionPane.OK_CANCEL_OPTION);
-            return;
-        }
-
-        Staff selected = staffService.findByEmail((String) tblUsers.getValueAt(tblUsers.getSelectedRow(), 2));
-        EditUserDialog dlg = new EditUserDialog(this, selected);
-        dlg.setVisible(true);
-
-        Staff edited = dlg.getEditedStaff();
-
-        if (edited != null) {
-            EditUserCommand cmd = new EditUserCommand(staffService, edited, currentUser != null ? currentUser.getEmail() : "system");
-            invoker.executeCommand(cmd);
-            refreshUsersTable();
-            JOptionPane.showMessageDialog(this, "User updated.");
-        }
-
-    }
-
-    private void onDeleteUser() {
-        int row = tblUsers.getSelectedRow();
-        if (row < 0) {
-            JOptionPane.showMessageDialog(this, "Select a user first.");
-            return;
-        }
-        Long id = ((Number) tblUsers.getValueAt(row, 0)).longValue();
-        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure to delete user id=" + id + "?", "Confirm", JOptionPane.YES_NO_OPTION);
-        if (confirm != JOptionPane.YES_OPTION) {
-            return;
-        }
-        DeleteUserCommand cmd = new DeleteUserCommand(staffService, id, currentUser != null ? currentUser.getEmail() : "system");
-        invoker.executeCommand(cmd);
-        refreshUsersTable();
-        JOptionPane.showMessageDialog(this, "User deleted.");
-    }
-
-    private void onExportUsersCSV() {
-        List<Staff> users = staffService.findAll();
-        String path = System.getProperty("user.home") + "/globemed_staff_report.csv";
-        ReportVisitor visitor = new CSVReportVisitor(path);
-        visitor.visitStaffList(users);
-        JOptionPane.showMessageDialog(this, "CSV exported to: " + path);
+        // Appointments button wiring
+        boolean allowed = securityService.hasPermission(currentUser, "APPOINTMENT_MANAGE");
+        btnAppointments.setEnabled(allowed);
+        btnAppointments.addActionListener(e -> {
+            if (!securityService.hasPermission(currentUser, "APPOINTMENT_MANAGE")) {
+                JOptionPane.showMessageDialog(this, "You don't have permission to manage appointments.", "Access denied", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            // open appointment UI
+            AppointmentForm apf = new AppointmentForm();
+            apf.setVisible(true);
+        });
     }
 
     private void initNavList() {
@@ -160,8 +107,10 @@ public class AdminDashboardForm extends JFrame {
         lblTitle.setFont(lblTitle.getFont().deriveFont(Font.BOLD, 18f));
         JPanel headerRight = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnProfile = new JButton("Profile");
+        btnAppointments = new JButton("Appointments");
         btnLogout = new JButton("Logout");
         headerRight.add(btnProfile);
+        headerRight.add(btnAppointments);
         headerRight.add(btnLogout);
         headerPanel.add(lblTitle, BorderLayout.WEST);
         headerPanel.add(headerRight, BorderLayout.EAST);

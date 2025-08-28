@@ -73,6 +73,15 @@ public class PatientDao {
     }
 
     // Additional useful lookup
+    public List<Patient> findByDoctor(Long doctorId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(
+                    "SELECT DISTINCT a.patient FROM Appointment a WHERE a.doctor.id = :doctorId", Patient.class)
+                    .setParameter("doctorId", doctorId)
+                    .getResultList();
+        }
+    }
+
     public List<Patient> findByLastName(String lastName) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<Patient> q = session.createQuery("FROM Patient p WHERE p.lastName = :ln", Patient.class);
@@ -84,4 +93,5 @@ public class PatientDao {
     public Optional<Patient> findOptionalById(Long id) {
         return Optional.ofNullable(findById(id));
     }
+
 }

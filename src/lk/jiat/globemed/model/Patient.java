@@ -76,6 +76,10 @@ public class Patient {
         this.lastName = lastName;
     }
 
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
+
     /**
      * @return the dob
      */
