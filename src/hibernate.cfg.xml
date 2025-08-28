@@ -46,6 +46,9 @@
         <mapping class="lk.jiat.globemed.model.PrescriptionItem"/>
         <!-- Additional entities -->
         <mapping class="lk.jiat.globemed.model.TimeSlot"/>
+        <!-- Nursing entities -->
+        <mapping class="lk.jiat.globemed.model.PatientVitals"/>
+        <mapping class="lk.jiat.globemed.model.NursingTask"/>
         
     </session-factory>
 </hibernate-configuration>

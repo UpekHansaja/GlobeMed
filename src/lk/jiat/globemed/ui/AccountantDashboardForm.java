@@ -138,13 +138,13 @@ public class AccountantDashboardForm extends JFrame {
                 if (!isSelected) {
                     String status = (String) table.getValueAt(row, 4);
                     if ("Pending".equals(status)) {
-                        c.setBackground(new Color(128, 97, 6)); // yellow
+                        c.setBackground(new Color(128, 97, 6)); // Dark yellow
                     } else if ("Paid".equals(status)) {
-                        c.setBackground(new Color(4, 89, 46)); // Light green
+                        c.setBackground(new Color(4, 89, 46)); // Dark green
                     } else if ("Rejected".equals(status)) {
-                        c.setBackground(new Color(99, 3, 3)); // Light red
+                        c.setBackground(new Color(99, 3, 3)); // Dark red
                     } else {
-                        c.setBackground(Color.WHITE);
+                        c.setBackground(Color.BLACK);
                     }
                 }
                 return c;

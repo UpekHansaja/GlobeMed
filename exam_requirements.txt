@@ -1,0 +1,214 @@
+Department of Examinations
+
+Course – (Leading To)
+
+Birmingham City University BSc (Hons) SE - Top Up
+
+Unit Name
+
+Object Oriented Design Patterns II
+
+Unit Id
+
+JIAT/OODP II
+
+Assignment Id
+
+JIAT/OODP II /EX/01
+
+Assignment Summary
+
+This assignment requires the application of Object-Oriented Design
+Patterns which they studied at the class to solve practical, realworld problems. Students must analyze given scenarios, select
+appropriate Design Patterns, and provide a justified
+implementation. The assignment is structured into five tasks, each
+contributing equally to the final grade. All tasks are compulsory and
+must be submitted via the online portal by the specified deadline.
+
+Duration
+
+2 Week
+
+Submission Via
+
+Online (Student Portal)
+
+Document Format
+
+Document Format (Pdf)
+
+GUIDELINES FOR CANDIDATES
+●
+●
+●
+●
+●
+
+Answer all questions
+Your studies will be governed by the Java Institute Academic Regulations on Assessment,
+Progression and Awards.
+Students are expected to use reference books, the Internet, journals and other similar sources
+in order to accomplish the task specified above.
+Students are expected to refrain from repeating any content in their research document.
+At the reassessment attempt, the mark is capped and the maximum mark that can be achieved
+is 40%.
+
+CHEATING AND PLAGIARISM
+Both cheating and plagiarism are totally unacceptable and the Institute maintains a strict policy against
+them. It is YOUR responsibility to be aware of this policy and to act accordingly.
+The basic principles are:
+●
+●
+
+●
+●
+●
+●
+●
+●
+●
+
+Don’t pass off anyone else’s work as your own, including coding examples. This is plagiarism and
+is viewed extremely seriously by the Institute.
+Don’t submit a piece of work in whole or in part that has already been submitted for assessment
+elsewhere. This is called duplication and, like plagiarism, is viewed extremely seriously by the
+Institute.
+Always acknowledge all of the sources that you have used in your assignment or project.
+If you are using the exact words of another person, always put them in quotation marks.
+Check that you know whether the assignment is to be produced individually or whether you can
+work with others.
+If you are doing group work, be sure about what you are supposed to do on your own.
+Never make up or falsify data to prove your point.
+Never allow others to copy your work.
+Never lend disks, memory sticks, or copies of your coursework to any other student. in the
+Institute. This may lead to you being accused of collusion.
+
+ASSIGNMENT BRIEF:
+You are required to complete the following tasks by applying appropriate data structures and algorithms
+to the given scenarios. Each task requires a thorough understanding of the concepts and their
+application in solving real-world problems.
+GlobeMed Healthcare Management System
+GlobeMed is a large healthcare organization that operates several hospitals, clinics, and pharmacies
+across the country. Currently, the organization struggles with managing patient records, scheduling
+appointments, handling billing, and coordinating care across its facilities. The existing systems are
+outdated and not well-integrated, leading to inefficiencies, errors, and poor patient experiences.
+To address these issues, GlobeMed's management has decided to implement a comprehensive
+Healthcare Management System. This system should integrate patient records, appointment
+scheduling, billing, and care coordination into a single, efficient platform. The system will need to
+support various types of healthcare professionals (doctors, nurses, pharmacists) and handle complex
+processes such as insurance claims and medical reporting.
+The project has been assigned to MediTech Solutions, where you are a senior software engineer
+responsible for leading the development team. You are expected to design and implement the system
+using appropriate design patterns to ensure scalability, maintainability, and ease of use.
+In this assignment, you will work on six parts. In parts A, B, C, D, E, and F, you will focus on different
+components of the system, applying your knowledge of design patterns. Part G and H provides
+instructions for the mid-assignment checkpoint for feedback, final presentation and report.
+
+Part A: Patient Record Management (15 marks)
+GlobeMed needs a system for managing patient records, including personal details, medical history, and
+treatment plans, securely and accessibly for authorized personnel only.
+•
+
+Tip: When choosing design patterns for this part, consider data security, privacy, and the need
+for authorized data access. Examples: Adapter for data interoperability.
+
+1. Identify the most suitable design pattern for managing secure, accessible patient records.
+marks)
+
+(3
+
+2. Analyze how the identified pattern could be used to securely manage and retrieve patient data.
+(4 marks)
+3. Critically evaluate the benefits of using this design pattern, specifically for data security,
+accessibility, and maintainability. (8 marks)
+
+Part B: Appointment Scheduling (15 marks)
+Efficient appointment scheduling is necessary for consultations, diagnostics, and surgeries across
+GlobeMed facilities. Patients need to book appointments with different healthcare professionals while
+the system manages staff schedules.
+•
+
+Tip: Look for patterns that support scheduling flexibility and real-time conflict management,
+such as Command to encapsulate scheduling requests.
+
+1. Identify the most suitable design pattern for the scheduling functionality. (3 marks)
+2. Provide a UML class diagram to demonstrate the selected design pattern’s mechanism. (4
+marks)
+3. Critically evaluate the pattern's benefits for appointment management, especially in multilocation scenarios. (8 marks)
+Part C: Billing and Insurance Claims (15 marks)
+GlobeMed needs a flexible, decoupled billing and insurance claims processing system for various
+services. This includes consultations, treatments, and medications, and should support billing directly or
+through insurance.
+•
+
+Tip: Focus on patterns that allow decoupling of billing from claims processing to increase
+flexibility, such as the Chain of Responsibility for multi-step claim approvals.
+
+1. Identify the most suitable design pattern for handling billing and insurance claims. (3 marks)
+2. Analyze how this pattern enables flexible billing processes in the system. (4 marks)
+3. Explain the design pattern’s role in implementing insurance claim processing, especially for
+scalability. (8 marks)
+
+Part D: Managing Medical Staff Roles and Permissions (15 marks)
+GlobeMed employs a diverse range of medical staff, including doctors, nurses, pharmacists, and
+administrative personnel. Each role requires different levels of access to the system and specific
+permissions to perform various tasks. Based on this requirement:
+i.
+ii.
+iii.
+
+Identify the most suitable design pattern to manage roles and permissions in the system. (3
+marks)
+Analyze how the identified design pattern can be used to implement role-based access
+control in the system. (4 marks)
+Write a sample code snippet demonstrating the application of the design pattern to fulfill
+this requirement. (8 marks)
+
+Part E: Generating Medical Reports (15 Marks)
+GlobeMed needs to generate various reports, such as patient treatment summaries, diagnostic results,
+and financial reports. The system should allow for the separation of report generation logic from core
+medical data objects. Based on this requirement:
+i.
+ii.
+iii.
+
+Identify the most suitable design pattern to separate report generation logic from medical
+data objects. (3 marks)
+Explain how the identified design pattern allows you to extract necessary information and
+generate reports. (4 marks)
+Critically evaluate the benefits of using the selected design pattern for maintainability and
+report flexibility. (8 marks)
+
+Part F: Security Considerations (15 marks)
+Healthcare data is sensitive, so the system must enforce robust security for all components. Consider
+factors like data encryption, user authentication, and access logging.
+1. Identify and justify design patterns for secure data handling across the system (patient records,
+billing, etc.). As examples you can use include Decorator for additional data handling layers. (5
+marks)
+2. Explain how these patterns address specific security risks in healthcare, such as unauthorized
+data access or data tampering. (5 marks)
+3. Discuss security best practices, like secure coding, encryption, and access control, that
+complement these patterns for enhanced protection. (5 marks)
+
+Part G: Mid-Assignment Checkpoint for Feedback (Optional)
+Midway through the assignment (suggested time: one week), you may submit initial work for feedback
+on any parts completed or in progress. This will help refine your approach and address any challenges
+early on.
+
+Part H: VIVA and Documentation (10 Marks)
+i.
+ii.
+
+iii.
+
+You are expected to develop the Healthcare Management System based on the given
+scenario.
+You will demonstrate your application in a VIVA session, where you will explain your use of
+design patterns, discuss architectural choices, and answer questions related to the design,
+functionality, and overall system structure. (5 marks)
+You are also expected to create comprehensive documentation, including a UML class
+diagram and working code, to illustrate the design and functionality of your application. (5
+marks)
+-END-
+
+
