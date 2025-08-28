@@ -1,22 +1,26 @@
 package lk.jiat.globemed.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Stack;
 import lk.jiat.globemed.dao.AuditDao;
 import lk.jiat.globemed.dao.RoleDao;
 import lk.jiat.globemed.dao.StaffDao;
-import lk.jiat.globemed.model.AuditLog;
+import lk.jiat.globemed.dao.StaffDaoAuditDecorator;
 import lk.jiat.globemed.model.Role;
 import lk.jiat.globemed.model.Staff;
 
+/**
+ * StaffService uses StaffDaoAuditDecorator to perform staff operations with
+ * auditing handled by the decorator.
+ */
 public class StaffService {
 
-    private final StaffDao staffDao = new StaffDao();
-    private final RoleDao roleDao = new RoleDao();
-    private final AuditDao auditDao = new AuditDao();
+    // underlying DAO + decorator
+    private final StaffDao rawDao = new StaffDao();
+    private final StaffDaoAuditDecorator staffDao = new StaffDaoAuditDecorator(rawDao, new AuditDao());
 
-    // simple Memento stack for undo of last edits
+    private final RoleDao roleDao = new RoleDao();
+
     private final Stack<StaffMemento> mementoStack = new Stack<>();
 
     public List<Staff> findAll() {
@@ -28,33 +32,27 @@ public class StaffService {
     }
 
     public Staff create(Staff s, String performedBy) {
-        Staff created = staffDao.create(s);
-        audit("Staff", created.getId(), "CREATE", performedBy, "Created staff: " + created.getEmail());
+        // save and audit via decorator
+        Staff created = staffDao.create(s, performedBy);
         return created;
     }
 
     public Staff update(Staff updated, String performedBy) {
-        // store snapshot before change
-        Staff before = staffDao.findById(updated.getId());
+        // snapshot for undo
+        Staff before = rawDao.findById(updated.getId());
         if (before != null) {
             mementoStack.push(new StaffMemento(before));
         }
-
-        Staff merged = staffDao.update(updated);
-        audit("Staff", merged.getId(), "UPDATE", performedBy, "Updated staff: " + merged.getEmail());
+        Staff merged = staffDao.update(updated, performedBy);
         return merged;
     }
 
     public boolean deleteById(Long id, String performedBy) {
-        Staff p = staffDao.findById(id);
-        if (p == null) {
-            return false;
+        Staff before = rawDao.findById(id);
+        if (before != null) {
+            mementoStack.push(new StaffMemento(before));
         }
-        mementoStack.push(new StaffMemento(p));
-        boolean ok = staffDao.deleteById(id);
-        if (ok) {
-            audit("Staff", id, "DELETE", performedBy, "Deleted staff id=" + id);
-        }
+        boolean ok = staffDao.deleteById(id, performedBy);
         return ok;
     }
 
@@ -63,24 +61,10 @@ public class StaffService {
             return false;
         }
         StaffMemento m = mementoStack.pop();
-        // restore
         Staff restored = m.restore();
-        staffDao.create(restored); // create as new if primary key null, else merge
-        // Note: if id was set, using create may conflict with PK. To fully restore safely,
-        // we can use update/merge or custom SQL. For simplicity, attempt merge:
-        // staffDao.update(restored);
+        // we call update to persist restored state; pass "system" as actor
+        staffDao.update(restored, "system");
         return true;
-    }
-
-    private void audit(String entity, Long entityId, String action, String by, String details) {
-        AuditLog log = new AuditLog();
-        log.setEntityName(entity);
-        log.setEntityId(entityId);
-        log.setAction(action);
-        log.setPerformedBy(by);
-        log.setPerformedAt(LocalDateTime.now());
-        log.setDetails(details);
-        auditDao.create(log);
     }
 
     public Role findRoleByName(String name) {
@@ -93,7 +77,6 @@ public class StaffService {
         private final Staff snapshot;
 
         StaffMemento(Staff s) {
-            // shallow copy (you can expand to deep clone if needed)
             Staff copy = new Staff();
             copy.setId(s.getId());
             copy.setName(s.getName());

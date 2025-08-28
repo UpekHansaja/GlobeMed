@@ -35,6 +35,7 @@
         <mapping class="lk.jiat.globemed.model.BillingRecord"/>
         <mapping class="lk.jiat.globemed.model.Role"/>
         <mapping class="lk.jiat.globemed.model.Permission"/>
+        <mapping class="lk.jiat.globemed.model.AuditLog"/>
         
     </session-factory>
 </hibernate-configuration>

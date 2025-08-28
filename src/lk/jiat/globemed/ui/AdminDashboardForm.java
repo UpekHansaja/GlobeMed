@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import lk.jiat.globemed.dao.RoleDao;
 import lk.jiat.globemed.model.Staff;
 import lk.jiat.globemed.report.CSVReportVisitor;
 import lk.jiat.globemed.report.ReportVisitor;
@@ -79,74 +78,42 @@ public class AdminDashboardForm extends JFrame {
     }
 
     private void onAddUser() {
-        // Simple dialog using JOptionPane inputs (replace with proper Form later)
-        String name = JOptionPane.showInputDialog(this, "Name:");
-        if (name == null || name.trim().isEmpty()) {
-            return;
-        }
-        String email = JOptionPane.showInputDialog(this, "Email:");
-        if (email == null || email.trim().isEmpty()) {
-            return;
-        }
-        String pwd = JOptionPane.showInputDialog(this, "Password:");
-        if (pwd == null) {
-            return;
-        }
-        String roleName = JOptionPane.showInputDialog(this, "Role (Admin/Doctor/Nurse/Pharmacist/Accountant):", "Admin");
-        if (roleName == null) {
-            return;
+
+        AddUserDialog dlg = new AddUserDialog(this);
+        dlg.setVisible(true);
+
+        Staff created = dlg.getCreatedStaff();
+
+        if (created != null) {
+            AddUserCommand cmd = new AddUserCommand(staffService, created, currentUser != null ? currentUser.getEmail() : "system");
+            invoker.executeCommand(cmd);
+            refreshUsersTable();
+            JOptionPane.showMessageDialog(this, "User created.");
         }
 
-        Staff s = new Staff();
-        s.setName(name.trim());
-        s.setEmail(email.trim());
-        s.setPassword(pwd);
-        // set role if exists
-        RoleDao rdao = new RoleDao();
-        var role = rdao.findByName(roleName.trim());
-        s.setRole(role);
-
-        AddUserCommand cmd = new AddUserCommand(staffService, s, currentUser != null ? currentUser.getEmail() : "system");
-        invoker.executeCommand(cmd);
-        refreshUsersTable();
-        JOptionPane.showMessageDialog(this, "User created.");
     }
 
     private void onEditUser() {
-        int row = tblUsers.getSelectedRow();
-        if (row < 0) {
-            JOptionPane.showMessageDialog(this, "Select a user first.");
-            return;
-        }
-        Long id = ((Number) tblUsers.getValueAt(row, 0)).longValue();
-        Staff existing = staffService.findByEmail((String) tblUsers.getValueAt(row, 2));
-        if (existing == null) {
-            JOptionPane.showMessageDialog(this, "User not found.");
+
+        System.out.println("Selected user row on edit: " + tblUsers.getSelectedRow());
+        if (tblUsers.getSelectedRow() < 0) {
+            JOptionPane.showMessageDialog(this, "Please select a user first", "User Not Selected", JOptionPane.OK_CANCEL_OPTION);
             return;
         }
 
-        String name = JOptionPane.showInputDialog(this, "Name:", existing.getName());
-        if (name == null) {
-            return;
-        }
-        String pwd = JOptionPane.showInputDialog(this, "Password:", existing.getPassword());
-        if (pwd == null) {
-            return;
-        }
-        String roleName = JOptionPane.showInputDialog(this, "Role:", existing.getRole() != null ? existing.getRole().getName() : "Admin");
-        if (roleName == null) {
-            return;
+        Staff selected = staffService.findByEmail((String) tblUsers.getValueAt(tblUsers.getSelectedRow(), 2));
+        EditUserDialog dlg = new EditUserDialog(this, selected);
+        dlg.setVisible(true);
+
+        Staff edited = dlg.getEditedStaff();
+
+        if (edited != null) {
+            EditUserCommand cmd = new EditUserCommand(staffService, edited, currentUser != null ? currentUser.getEmail() : "system");
+            invoker.executeCommand(cmd);
+            refreshUsersTable();
+            JOptionPane.showMessageDialog(this, "User updated.");
         }
 
-        existing.setName(name.trim());
-        existing.setPassword(pwd);
-        RoleDao rdao = new RoleDao();
-        existing.setRole(rdao.findByName(roleName.trim()));
-
-        EditUserCommand cmd = new EditUserCommand(staffService, existing, currentUser != null ? currentUser.getEmail() : "system");
-        invoker.executeCommand(cmd);
-        refreshUsersTable();
-        JOptionPane.showMessageDialog(this, "User updated.");
     }
 
     private void onDeleteUser() {
