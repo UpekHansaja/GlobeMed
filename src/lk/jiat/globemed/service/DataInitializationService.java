@@ -34,8 +34,9 @@ public class DataInitializationService {
             initializePermissions();
             initializeRoles();
             initializeDefaultUsers();
-            initializeSamplePatients();
-            initializeHospitalStructure();
+            // Optional data initialization (commented out to keep database clean)
+            // initializeSamplePatients();
+            // initializeHospitalStructure();
             
             System.out.println("✅ System data initialization completed successfully!");
             
@@ -190,152 +191,26 @@ public class DataInitializationService {
             }
         }
         
-        // Sample Doctor
-        if (staffDao.findByEmail("doctor@globemed.lk") == null) {
-            Staff doctor = new Staff();
-            doctor.setName("Dr. Sarah Johnson");
-            doctor.setEmail("doctor@globemed.lk");
-            doctor.setPassword("doctor123");
-            doctor.setRole(roleDao.findByName("Doctor"));
-            
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                Transaction tx = session.beginTransaction();
-                session.persist(doctor);
-                tx.commit();
-                System.out.println("✅ Created sample doctor: doctor@globemed.lk / doctor123");
-            }
-        }
-        
-        // Sample Nurse
-        if (staffDao.findByEmail("nurse@globemed.lk") == null) {
-            Staff nurse = new Staff();
-            nurse.setName("Nurse Mary Wilson");
-            nurse.setEmail("nurse@globemed.lk");
-            nurse.setPassword("nurse123");
-            nurse.setRole(roleDao.findByName("Nurse"));
-            
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                Transaction tx = session.beginTransaction();
-                session.persist(nurse);
-                tx.commit();
-                System.out.println("✅ Created sample nurse: nurse@globemed.lk / nurse123");
-            }
-        }
-        
-        // Sample Pharmacist
-        if (staffDao.findByEmail("pharmacist@globemed.lk") == null) {
-            Staff pharmacist = new Staff();
-            pharmacist.setName("Pharmacist John Davis");
-            pharmacist.setEmail("pharmacist@globemed.lk");
-            pharmacist.setPassword("pharmacist123");
-            pharmacist.setRole(roleDao.findByName("Pharmacist"));
-            
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                Transaction tx = session.beginTransaction();
-                session.persist(pharmacist);
-                tx.commit();
-                System.out.println("✅ Created sample pharmacist: pharmacist@globemed.lk / pharmacist123");
-            }
-        }
-        
-        // Sample Accountant
-        if (staffDao.findByEmail("accountant@globemed.lk") == null) {
-            Staff accountant = new Staff();
-            accountant.setName("Accountant Lisa Brown");
-            accountant.setEmail("accountant@globemed.lk");
-            accountant.setPassword("accountant123");
-            accountant.setRole(roleDao.findByName("Accountant"));
-            
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                Transaction tx = session.beginTransaction();
-                session.persist(accountant);
-                tx.commit();
-                System.out.println("✅ Created sample accountant: accountant@globemed.lk / accountant123");
-            }
-        }
+        // Only create additional sample users if specifically requested
+        // This prevents automatic creation of multiple users on every startup
+        System.out.println("ℹ️  Additional sample users can be created through the Admin Dashboard");
     }
     
     /**
-     * Initialize sample patients for demonstration
+     * Initialize sample patients for demonstration (optional)
      */
     private void initializeSamplePatients() {
-        if (patientDao.findAll().isEmpty()) {
-            // Sample Patient 1
-            Patient patient1 = new Patient();
-            patient1.setFirstName("John");
-            patient1.setLastName("Doe");
-            patient1.setDob(LocalDate.of(1985, 5, 15));
-            patient1.setGender("Male");
-            patient1.setContactNumber("555-0101");
-            patient1.setAddress("123 Main Street, Colombo 01");
-            
-            // Sample Patient 2
-            Patient patient2 = new Patient();
-            patient2.setFirstName("Jane");
-            patient2.setLastName("Smith");
-            patient2.setDob(LocalDate.of(1990, 8, 22));
-            patient2.setGender("Female");
-            patient2.setContactNumber("555-0102");
-            patient2.setAddress("456 Oak Avenue, Colombo 02");
-            
-            // Sample Patient 3
-            Patient patient3 = new Patient();
-            patient3.setFirstName("Robert");
-            patient3.setLastName("Johnson");
-            patient3.setDob(LocalDate.of(1978, 12, 10));
-            patient3.setGender("Male");
-            patient3.setContactNumber("555-0103");
-            patient3.setAddress("789 Pine Road, Colombo 03");
-            
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                Transaction tx = session.beginTransaction();
-                session.persist(patient1);
-                session.persist(patient2);
-                session.persist(patient3);
-                tx.commit();
-                System.out.println("✅ Created sample patients");
-            }
-        }
+        // Skip automatic patient creation to keep database clean
+        // Patients can be added through the system interface
+        System.out.println("ℹ️  Sample patients can be added through the Patient Management interface");
     }
     
     /**
-     * Initialize hospital structure using Composite pattern
+     * Initialize hospital structure using Composite pattern (optional)
      */
     private void initializeHospitalStructure() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            // Check if hospital structure already exists
-            Long hospitalCount = (Long) session.createQuery("SELECT COUNT(h) FROM Hospital h").getSingleResult();
-            
-            if (hospitalCount == 0) {
-                Transaction tx = session.beginTransaction();
-                
-                // Create main hospital
-                Hospital mainHospital = new Hospital("GlobeMed Central Hospital", 
-                    "Main healthcare facility", "GMC001", "123 Medical Drive, Colombo 01");
-                
-                // Create departments
-                Department cardiology = new Department("Cardiology", 
-                    "Heart and cardiovascular care", "CARD", 150000.0);
-                Department neurology = new Department("Neurology", 
-                    "Brain and nervous system care", "NEUR", 120000.0);
-                Department pediatrics = new Department("Pediatrics", 
-                    "Children's healthcare", "PEDI", 100000.0);
-                Department emergency = new Department("Emergency", 
-                    "Emergency and trauma care", "EMER", 200000.0);
-                
-                // Add departments to hospital
-                mainHospital.add(cardiology);
-                mainHospital.add(neurology);
-                mainHospital.add(pediatrics);
-                mainHospital.add(emergency);
-                
-                session.persist(mainHospital);
-                tx.commit();
-                
-                System.out.println("✅ Created hospital structure with departments");
-            }
-        } catch (Exception e) {
-            System.err.println("❌ Error creating hospital structure: " + e.getMessage());
-        }
+        // Skip automatic hospital structure creation to keep database clean
+        // Hospital structure can be configured through the admin interface
+        System.out.println("ℹ️  Hospital structure can be configured through the Admin Dashboard");
     }
 }

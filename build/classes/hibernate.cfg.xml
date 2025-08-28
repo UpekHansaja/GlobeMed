@@ -40,6 +40,12 @@
         <mapping class="lk.jiat.globemed.model.MedicalUnit"/>
         <mapping class="lk.jiat.globemed.model.Department"/>
         <mapping class="lk.jiat.globemed.model.Hospital"/>
+        <!-- Pharmacy entities -->
+        <mapping class="lk.jiat.globemed.model.Medication"/>
+        <mapping class="lk.jiat.globemed.model.Prescription"/>
+        <mapping class="lk.jiat.globemed.model.PrescriptionItem"/>
+        <!-- Additional entities -->
+        <mapping class="lk.jiat.globemed.model.TimeSlot"/>
         
     </session-factory>
 </hibernate-configuration>

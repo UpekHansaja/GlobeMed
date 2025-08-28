@@ -59,15 +59,7 @@ public class MainApp {
         }
 
         SwingUtilities.invokeLater(() -> {
-            // Show welcome dialog first
-            JFrame tempFrame = new JFrame();
-            tempFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            
-            lk.jiat.globemed.ui.WelcomeDialog welcomeDialog = 
-                new lk.jiat.globemed.ui.WelcomeDialog(tempFrame);
-            welcomeDialog.setVisible(true);
-            
-            // After welcome dialog is closed, show login form
+            // Launch the GlobeMed Healthcare Management System directly
             new LoginForm().setVisible(true);
         });
     }
