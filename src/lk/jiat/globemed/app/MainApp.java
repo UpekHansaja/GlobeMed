@@ -53,7 +53,28 @@ public class MainApp {
         }
 
         SwingUtilities.invokeLater(() -> {
-            new LoginForm().setVisible(true);
+            // Show option to run pattern demo or normal application
+            int choice = JOptionPane.showOptionDialog(null,
+                    "Choose application mode:",
+                    "GlobeMed Application",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    new String[]{"Login to System", "Design Patterns Demo", "Exit"},
+                    "Login to System");
+            
+            switch (choice) {
+                case 0: // Login to System
+                    new LoginForm().setVisible(true);
+                    break;
+                case 1: // Design Patterns Demo
+                    new lk.jiat.globemed.ui.PatternDemoForm().setVisible(true);
+                    break;
+                case 2: // Exit
+                default:
+                    System.exit(0);
+                    break;
+            }
         });
     }
 

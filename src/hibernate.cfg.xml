@@ -36,6 +36,10 @@
         <mapping class="lk.jiat.globemed.model.Role"/>
         <mapping class="lk.jiat.globemed.model.Permission"/>
         <mapping class="lk.jiat.globemed.model.AuditLog"/>
+        <!-- New composite pattern entities -->
+        <mapping class="lk.jiat.globemed.model.MedicalUnit"/>
+        <mapping class="lk.jiat.globemed.model.Department"/>
+        <mapping class="lk.jiat.globemed.model.Hospital"/>
         
     </session-factory>
 </hibernate-configuration>
