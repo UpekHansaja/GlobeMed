@@ -2,15 +2,28 @@ package lk.jiat.globemed.app;
 
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatGitHubDarkIJTheme;
 import javax.swing.*;
-import lk.jiat.globemed.dao.StaffDao;
-import lk.jiat.globemed.model.Staff;
 import lk.jiat.globemed.ui.LoginForm;
 import lk.jiat.globemed.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 /**
- *
+ * GlobeMed Healthcare Management System
+ * 
+ * A comprehensive healthcare management system implementing advanced design patterns
+ * including Composite, Bridge, Builder, Chain of Responsibility, Flyweight, 
+ * Interpreter, Mediator, and Prototype patterns.
+ * 
+ * Features:
+ * - Patient Management
+ * - Staff Management with Role-based Access Control
+ * - Appointment Scheduling and Management
+ * - Billing and Financial Management
+ * - Audit Logging and Security
+ * - Notification System (Email/SMS)
+ * - Approval Workflows
+ * - Reporting System
+ * 
  * @author upekhansaja
  */
 public class MainApp {
@@ -21,25 +34,18 @@ public class MainApp {
 
         try {
             HibernateUtil.getSessionFactory();
-
             testDatabaseConnection();
-
             System.out.println("✅ Database connection successful!");
 
-            StaffDao staffDao = new StaffDao();
-            if (staffDao.findByEmail("admin@globemed.lk") == null) {
-                Staff admin = new Staff();
-                admin.setName("System Admin");
-                admin.setEmail("admin@globemed.lk");
-                admin.setPassword("admin123"); // ⚠️ plain for now
-                // assign role later
-                try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                    Transaction tx = session.beginTransaction();
-                    session.persist(admin);
-                    tx.commit();
-                }
-                System.out.println("✅ Default admin user created: admin@globemed.lk / admin123");
-            }
+            // Initialize system data (roles, permissions, default users, sample data)
+            lk.jiat.globemed.service.DataInitializationService dataInit = 
+                new lk.jiat.globemed.service.DataInitializationService();
+            dataInit.initializeSystemData();
+            
+            // Show system status
+            lk.jiat.globemed.service.SystemStatusService statusService = 
+                new lk.jiat.globemed.service.SystemStatusService();
+            System.out.println(statusService.getSystemHealthSummary());
 
         } catch (Exception e) {
             System.err.println("❌ Database connection failed: " + e.getMessage());
@@ -53,28 +59,16 @@ public class MainApp {
         }
 
         SwingUtilities.invokeLater(() -> {
-            // Show option to run pattern demo or normal application
-            int choice = JOptionPane.showOptionDialog(null,
-                    "Choose application mode:",
-                    "GlobeMed Application",
-                    JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    new String[]{"Login to System", "Design Patterns Demo", "Exit"},
-                    "Login to System");
+            // Show welcome dialog first
+            JFrame tempFrame = new JFrame();
+            tempFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
-            switch (choice) {
-                case 0: // Login to System
-                    new LoginForm().setVisible(true);
-                    break;
-                case 1: // Design Patterns Demo
-                    new lk.jiat.globemed.ui.PatternDemoForm().setVisible(true);
-                    break;
-                case 2: // Exit
-                default:
-                    System.exit(0);
-                    break;
-            }
+            lk.jiat.globemed.ui.WelcomeDialog welcomeDialog = 
+                new lk.jiat.globemed.ui.WelcomeDialog(tempFrame);
+            welcomeDialog.setVisible(true);
+            
+            // After welcome dialog is closed, show login form
+            new LoginForm().setVisible(true);
         });
     }
 

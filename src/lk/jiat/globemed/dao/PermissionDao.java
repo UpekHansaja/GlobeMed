@@ -19,4 +19,12 @@ public class PermissionDao {
             return s.createQuery("FROM Permission", Permission.class).getResultList();
         }
     }
+    
+    public Permission findByName(String name) {
+        try (Session s = HibernateUtil.getSessionFactory().openSession()) {
+            return s.createQuery("FROM Permission p WHERE p.name = :name", Permission.class)
+                    .setParameter("name", name)
+                    .uniqueResult();
+        }
+    }
 }
