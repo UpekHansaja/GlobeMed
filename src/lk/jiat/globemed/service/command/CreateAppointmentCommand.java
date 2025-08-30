@@ -7,7 +7,7 @@ public class CreateAppointmentCommand implements Command {
 
     private final AppointmentService appointmentService;
     private final Appointment appointment;
-    private final String performedBy; // optional actor info for logs
+    private final String performedBy;
 
     public CreateAppointmentCommand(AppointmentService service, Appointment appointment, String performedBy) {
         this.appointmentService = service;
@@ -17,9 +17,8 @@ public class CreateAppointmentCommand implements Command {
 
     @Override
     public void execute() {
-        // service handles persistence and defaults
+
         appointmentService.createAppointment(appointment);
-        // Optionally: log/perfomedBy handling can be added (audit done elsewhere)
     }
 
     public Appointment getAppointment() {

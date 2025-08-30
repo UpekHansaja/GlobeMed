@@ -22,13 +22,11 @@ public class AccountantDashboardForm extends JFrame {
     private final BillingDao billingDao = new BillingDao();
     private final PatientDao patientDao = new PatientDao();
 
-    // UI Components
     private JLabel lblTitle;
     private JButton btnLogout;
     private JButton btnProfile;
     private JTabbedPane tabMain;
 
-    // Billing Tab Components
     private JTable tblBilling;
     private DefaultTableModel billingTableModel;
     private JButton btnProcessPayment;
@@ -38,14 +36,12 @@ public class AccountantDashboardForm extends JFrame {
     private JComboBox<String> cmbStatusFilter;
     private JLabel lblFinancialStats;
 
-    // Payments Tab Components
     private JTable tblPayments;
     private DefaultTableModel paymentsTableModel;
     private JButton btnViewPaymentDetails;
     private JButton btnRefreshPayments;
     private JComboBox<String> cmbPaymentMethodFilter;
 
-    // Reports Tab Components
     private JTextArea txtReportArea;
     private JButton btnGenerateFinancialReport;
     private JButton btnGenerateRevenueReport;
@@ -67,14 +63,13 @@ public class AccountantDashboardForm extends JFrame {
         setSize(1200, 800);
         setLayout(new BorderLayout());
 
-        // Header Panel
         JPanel headerPanel = new JPanel(new BorderLayout(10, 10));
-        lblTitle = new JLabel("💰 Accountant Dashboard");
+        lblTitle = new JLabel("Accountant Dashboard");
         lblTitle.setFont(lblTitle.getFont().deriveFont(Font.BOLD, 18f));
 
         JPanel headerRight = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        btnProfile = new JButton("👤 Profile");
-        btnLogout = new JButton("🚪 Logout");
+        btnProfile = new JButton("Profile");
+        btnLogout = new JButton("Logout");
         headerRight.add(btnProfile);
         headerRight.add(btnLogout);
 
@@ -83,13 +78,11 @@ public class AccountantDashboardForm extends JFrame {
         headerPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
         add(headerPanel, BorderLayout.NORTH);
 
-        // Main Tabbed Pane
         tabMain = new JTabbedPane();
 
-        // Create tabs
-        tabMain.addTab("💳 Billing", createBillingTab());
-        tabMain.addTab("💰 Payments", createPaymentsTab());
-        tabMain.addTab("📊 Reports", createReportsTab());
+        tabMain.addTab("Billing", createBillingTab());
+        tabMain.addTab("Payments", createPaymentsTab());
+        tabMain.addTab("Reports", createReportsTab());
 
         add(tabMain, BorderLayout.CENTER);
     }
@@ -98,10 +91,8 @@ public class AccountantDashboardForm extends JFrame {
         JPanel tabBilling = new JPanel(new BorderLayout(5, 5));
         tabBilling.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Top panel with filters and stats
         JPanel topPanel = new JPanel(new BorderLayout(5, 5));
 
-        // Filter panel
         JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         filterPanel.add(new JLabel("Status Filter:"));
         cmbStatusFilter = new JComboBox<>(new String[]{"All", "Pending", "Paid", "Rejected"});
@@ -109,14 +100,12 @@ public class AccountantDashboardForm extends JFrame {
 
         topPanel.add(filterPanel, BorderLayout.WEST);
 
-        // Stats panel
         lblFinancialStats = new JLabel("Loading financial statistics...");
         lblFinancialStats.setHorizontalAlignment(SwingConstants.RIGHT);
         topPanel.add(lblFinancialStats, BorderLayout.EAST);
 
         tabBilling.add(topPanel, BorderLayout.NORTH);
 
-        // Billing table
         String[] columnNames = {"ID", "Patient", "Amount", "Payment Method", "Status", "Created Date"};
         billingTableModel = new DefaultTableModel(columnNames, 0) {
             @Override
@@ -128,7 +117,6 @@ public class AccountantDashboardForm extends JFrame {
         tblBilling.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tblBilling.getTableHeader().setReorderingAllowed(false);
 
-        // Custom cell renderer for status highlighting
         tblBilling.setDefaultRenderer(Object.class, new javax.swing.table.DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
@@ -155,7 +143,6 @@ public class AccountantDashboardForm extends JFrame {
         scrollPane.setBorder(BorderFactory.createTitledBorder("Billing Records"));
         tabBilling.add(scrollPane, BorderLayout.CENTER);
 
-        // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         btnProcessPayment = new JButton("✅ Process Payment");
         btnRejectPayment = new JButton("❌ Reject Payment");
@@ -176,7 +163,6 @@ public class AccountantDashboardForm extends JFrame {
         JPanel tabPayments = new JPanel(new BorderLayout(5, 5));
         tabPayments.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Filter panel
         JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         filterPanel.add(new JLabel("Payment Method:"));
         cmbPaymentMethodFilter = new JComboBox<>(new String[]{"All", "Cash", "Card", "Insurance", "Bank Transfer"});
@@ -184,7 +170,6 @@ public class AccountantDashboardForm extends JFrame {
 
         tabPayments.add(filterPanel, BorderLayout.NORTH);
 
-        // Payments table
         String[] columnNames = {"ID", "Patient", "Amount", "Payment Method", "Status", "Date", "Time"};
         paymentsTableModel = new DefaultTableModel(columnNames, 0) {
             @Override
@@ -200,7 +185,6 @@ public class AccountantDashboardForm extends JFrame {
         scrollPane.setBorder(BorderFactory.createTitledBorder("Payment History"));
         tabPayments.add(scrollPane, BorderLayout.CENTER);
 
-        // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         btnViewPaymentDetails = new JButton("👁️ View Details");
         btnRefreshPayments = new JButton("🔄 Refresh");
@@ -217,12 +201,11 @@ public class AccountantDashboardForm extends JFrame {
         JPanel tabReports = new JPanel(new BorderLayout(5, 5));
         tabReports.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        btnGenerateFinancialReport = new JButton("📊 Financial Report");
-        btnGenerateRevenueReport = new JButton("💰 Revenue Report");
-        btnGenerateOutstandingReport = new JButton("⚠️ Outstanding Payments");
-        btnExportReport = new JButton("📤 Export Report");
+        btnGenerateFinancialReport = new JButton("Financial Report");
+        btnGenerateRevenueReport = new JButton("Revenue Report");
+        btnGenerateOutstandingReport = new JButton("Outstanding Payments");
+        btnExportReport = new JButton("Export Report");
 
         buttonPanel.add(btnGenerateFinancialReport);
         buttonPanel.add(btnGenerateRevenueReport);
@@ -231,7 +214,6 @@ public class AccountantDashboardForm extends JFrame {
 
         tabReports.add(buttonPanel, BorderLayout.NORTH);
 
-        // Report display area
         txtReportArea = new JTextArea();
         txtReportArea.setEditable(false);
         txtReportArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
@@ -244,10 +226,9 @@ public class AccountantDashboardForm extends JFrame {
 
     private void postInit(Staff user) {
         this.currentUser = user;
-        setTitle("💰 Accountant Dashboard - " + (currentUser != null ? currentUser.getName() : ""));
+        setTitle("Accountant Dashboard - " + (currentUser != null ? currentUser.getName() : ""));
         setLocationRelativeTo(null);
 
-        // Event handlers
         btnLogout.addActionListener(e -> {
             dispose();
             new LoginForm().setVisible(true);
@@ -260,33 +241,27 @@ public class AccountantDashboardForm extends JFrame {
                     "Profile Information", JOptionPane.INFORMATION_MESSAGE);
         });
 
-        // Billing actions
         btnProcessPayment.addActionListener(this::processPaymentAction);
         btnRejectPayment.addActionListener(this::rejectPaymentAction);
         btnCreateBilling.addActionListener(this::createBillingAction);
         btnRefreshBilling.addActionListener(e -> loadBillingData());
 
-        // Filter actions
         cmbStatusFilter.addActionListener(e -> filterBillingByStatus());
         cmbPaymentMethodFilter.addActionListener(e -> filterPaymentsByMethod());
 
-        // Payment actions
         btnViewPaymentDetails.addActionListener(this::viewPaymentDetailsAction);
         btnRefreshPayments.addActionListener(e -> loadPaymentsData());
 
-        // Report actions
         btnGenerateFinancialReport.addActionListener(this::generateFinancialReportAction);
         btnGenerateRevenueReport.addActionListener(this::generateRevenueReportAction);
         btnGenerateOutstandingReport.addActionListener(this::generateOutstandingReportAction);
         btnExportReport.addActionListener(this::exportReportAction);
 
-        // Load initial data
         loadBillingData();
         loadPaymentsData();
         updateFinancialStats();
     }
 
-    // ===== DATA LOADING METHODS =====
     private void loadBillingData() {
         try {
             List<BillingRecord> billingRecords = billingDao.findAll();
@@ -305,7 +280,7 @@ public class AccountantDashboardForm extends JFrame {
             }
 
             updateFinancialStats();
-            System.out.println("✅ Loaded " + billingRecords.size() + " billing records");
+            System.out.println("Loaded " + billingRecords.size() + " billing records");
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
@@ -333,7 +308,7 @@ public class AccountantDashboardForm extends JFrame {
                 paymentsTableModel.addRow(row);
             }
 
-            System.out.println("✅ Loaded " + paidRecords.size() + " payment records");
+            System.out.println("Loaded " + paidRecords.size() + " payment records");
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
@@ -347,7 +322,7 @@ public class AccountantDashboardForm extends JFrame {
         try {
             Map<String, Object> stats = accountantService.getFinancialStatistics();
             String statsText = String.format(
-                    "💰 Revenue: $%.2f | 📋 Total: %s | ✅ Paid: %s | ⏳ Pending: %s | ❌ Rejected: %s",
+                    "Revenue: $%.2f | Total: %s | Paid: %s | Pending: %s | Rejected: %s",
                     stats.get("totalRevenue"),
                     stats.get("totalRecords"),
                     stats.get("paidRecords"),
@@ -360,7 +335,6 @@ public class AccountantDashboardForm extends JFrame {
         }
     }
 
-    // ===== FILTER METHODS =====
     private void filterBillingByStatus() {
         String selectedStatus = (String) cmbStatusFilter.getSelectedItem();
         if ("All".equals(selectedStatus)) {
@@ -422,7 +396,6 @@ public class AccountantDashboardForm extends JFrame {
         }
     }
 
-    // ===== ACTION METHODS =====
     private void processPaymentAction(ActionEvent e) {
         int selectedRow = tblBilling.getSelectedRow();
         if (selectedRow == -1) {
@@ -449,7 +422,6 @@ public class AccountantDashboardForm extends JFrame {
             return;
         }
 
-        // Payment method selection dialog
         String[] paymentMethods = {"Cash", "Card", "Insurance", "Bank Transfer"};
         String selectedMethod = (String) JOptionPane.showInputDialog(this,
                 "Select payment method for $" + String.format("%.2f", billing.getAmount()) + ":",
@@ -576,7 +548,6 @@ public class AccountantDashboardForm extends JFrame {
         JOptionPane.showMessageDialog(this, details, "Payment Details", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    // ===== REPORT GENERATION METHODS =====
     private void generateFinancialReportAction(ActionEvent e) {
         try {
             String report = accountantService.generateFinancialReport();
@@ -590,7 +561,7 @@ public class AccountantDashboardForm extends JFrame {
     }
 
     private void generateRevenueReportAction(ActionEvent e) {
-        // Simple date range selection for now
+
         String startDateStr = JOptionPane.showInputDialog(this,
                 "Enter start date (yyyy-MM-dd):",
                 "Revenue Report",

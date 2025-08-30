@@ -22,19 +22,19 @@ public class PrescriptionItem {
     private Integer quantity;
 
     @Column(length = 200)
-    private String dosageInstructions; // "Take 1 tablet twice daily after meals"
+    private String dosageInstructions; // 1 tablet per after a meal
 
     @Column(nullable = false)
-    private Integer durationDays; // How many days the medication should be taken
+    private Integer durationDays; // How long the medicine should continue
 
     @Column(length = 500)
     private String specialInstructions;
 
-    // Constructors
-    public PrescriptionItem() {}
+    public PrescriptionItem() {
+    }
 
-    public PrescriptionItem(Prescription prescription, Medication medication, Integer quantity, 
-                           String dosageInstructions, Integer durationDays) {
+    public PrescriptionItem(Prescription prescription, Medication medication, Integer quantity,
+            String dosageInstructions, Integer durationDays) {
         this.prescription = prescription;
         this.medication = medication;
         this.quantity = quantity;
@@ -42,7 +42,6 @@ public class PrescriptionItem {
         this.durationDays = durationDays;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -99,7 +98,6 @@ public class PrescriptionItem {
         this.specialInstructions = specialInstructions;
     }
 
-    // Business methods
     public double getItemTotal() {
         return quantity * medication.getUnitPrice();
     }

@@ -7,25 +7,6 @@ import lk.jiat.globemed.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-/**
- * GlobeMed Healthcare Management System
- * 
- * A comprehensive healthcare management system implementing advanced design patterns
- * including Composite, Bridge, Builder, Chain of Responsibility, Flyweight, 
- * Interpreter, Mediator, and Prototype patterns.
- * 
- * Features:
- * - Patient Management
- * - Staff Management with Role-based Access Control
- * - Appointment Scheduling and Management
- * - Billing and Financial Management
- * - Audit Logging and Security
- * - Notification System (Email/SMS)
- * - Approval Workflows
- * - Reporting System
- * 
- * @author upekhansaja
- */
 public class MainApp {
 
     public static void main(String[] args) {
@@ -37,14 +18,12 @@ public class MainApp {
             testDatabaseConnection();
             System.out.println("✅ Database connection successful!");
 
-            // Initialize system data (roles, permissions, default users, sample data)
-            lk.jiat.globemed.service.DataInitializationService dataInit = 
-                new lk.jiat.globemed.service.DataInitializationService();
+            lk.jiat.globemed.service.DataInitializationService dataInit
+                    = new lk.jiat.globemed.service.DataInitializationService();
             dataInit.initializeSystemData();
-            
-            // Show system status
-            lk.jiat.globemed.service.SystemStatusService statusService = 
-                new lk.jiat.globemed.service.SystemStatusService();
+
+            lk.jiat.globemed.service.SystemStatusService statusService
+                    = new lk.jiat.globemed.service.SystemStatusService();
             System.out.println(statusService.getSystemHealthSummary());
 
         } catch (Exception e) {
@@ -59,7 +38,6 @@ public class MainApp {
         }
 
         SwingUtilities.invokeLater(() -> {
-            // Launch the GlobeMed Healthcare Management System directly
             new LoginForm().setVisible(true);
         });
     }

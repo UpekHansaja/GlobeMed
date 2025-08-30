@@ -20,7 +20,6 @@ public class RescheduleAppointmentCommand implements Command {
     @Override
     public void execute() {
         appointmentService.rescheduleAppointment(appointmentId, newDateTime);
-        // Optionally: add audit/log of performedBy
     }
 
     public Long getAppointmentId() {

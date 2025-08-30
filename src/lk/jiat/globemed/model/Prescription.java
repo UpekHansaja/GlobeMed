@@ -22,7 +22,7 @@ public class Prescription {
 
     @ManyToOne
     @JoinColumn(name = "pharmacist_id")
-    private Staff pharmacist; // Who dispensed the prescription
+    private Staff pharmacist;
 
     @Column(nullable = false)
     private LocalDateTime prescribedDate;
@@ -38,8 +38,8 @@ public class Prescription {
     @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<PrescriptionItem> items;
 
-    // Constructors
-    public Prescription() {}
+    public Prescription() {
+    }
 
     public Prescription(Patient patient, Staff doctor) {
         this.patient = patient;
@@ -48,7 +48,6 @@ public class Prescription {
         this.status = "Pending";
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -121,7 +120,6 @@ public class Prescription {
         this.items = items;
     }
 
-    // Business methods
     public double getTotalCost() {
         return items != null ? items.stream()
                 .mapToDouble(item -> item.getQuantity() * item.getMedication().getUnitPrice())

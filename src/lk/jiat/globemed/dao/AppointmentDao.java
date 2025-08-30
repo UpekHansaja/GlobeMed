@@ -82,7 +82,6 @@ public class AppointmentDao {
         }
     }
 
-    // Additional query helpers
     public List<Appointment> findByPatientId(Long patientId) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<Appointment> q = session.createQuery("FROM Appointment a WHERE a.patient.id = :pid", Appointment.class);

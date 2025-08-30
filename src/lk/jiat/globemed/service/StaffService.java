@@ -9,13 +9,8 @@ import lk.jiat.globemed.dao.StaffDaoAuditDecorator;
 import lk.jiat.globemed.model.Role;
 import lk.jiat.globemed.model.Staff;
 
-/**
- * StaffService uses StaffDaoAuditDecorator to perform staff operations with
- * auditing handled by the decorator.
- */
 public class StaffService {
 
-    // underlying DAO + decorator
     private final StaffDao rawDao = new StaffDao();
     private final StaffDaoAuditDecorator staffDao = new StaffDaoAuditDecorator(rawDao, new AuditDao());
 
@@ -32,13 +27,13 @@ public class StaffService {
     }
 
     public Staff create(Staff s, String performedBy) {
-        // save and audit via decorator
+
         Staff created = staffDao.create(s, performedBy);
         return created;
     }
 
     public Staff update(Staff updated, String performedBy) {
-        // snapshot for undo
+
         Staff before = rawDao.findById(updated.getId());
         if (before != null) {
             mementoStack.push(new StaffMemento(before));
@@ -62,7 +57,7 @@ public class StaffService {
         }
         StaffMemento m = mementoStack.pop();
         Staff restored = m.restore();
-        // we call update to persist restored state; pass "system" as actor
+
         staffDao.update(restored, "system");
         return true;
     }
@@ -71,7 +66,6 @@ public class StaffService {
         return roleDao.findByName(name);
     }
 
-    // Memento snapshot object
     private static class StaffMemento {
 
         private final Staff snapshot;

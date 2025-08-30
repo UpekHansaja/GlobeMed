@@ -13,7 +13,7 @@ public class Role {
     private Long id;
 
     @Column(unique = true, nullable = false, length = 50)
-    private String name; // Admin, Doctor, Nurse, Accountant
+    private String name; // role
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -65,5 +65,4 @@ public class Role {
         this.permissions = permissions;
     }
 
-    // toString()
 }

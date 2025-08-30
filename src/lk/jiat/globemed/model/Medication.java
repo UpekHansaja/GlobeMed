@@ -19,7 +19,7 @@ public class Medication {
     private String description;
 
     @Column(nullable = false, length = 50)
-    private String category; // Antibiotics, Pain Relief, Vitamins, etc.
+    private String category; // Antibiotics, Paiin-Relief, Vitamins, etc.
 
     @Column(nullable = false)
     private String manufacturer;
@@ -31,7 +31,7 @@ public class Medication {
     private Integer stockQuantity;
 
     @Column(nullable = false)
-    private Integer minimumStock; // Alert threshold
+    private Integer minimumStock;
 
     @Column(length = 50)
     private String dosageForm; // Tablet, Capsule, Syrup, Injection
@@ -50,11 +50,11 @@ public class Medication {
     @OneToMany(mappedBy = "medication", cascade = CascadeType.ALL)
     private List<PrescriptionItem> prescriptionItems;
 
-    // Constructors
-    public Medication() {}
+    public Medication() {
+    }
 
-    public Medication(String name, String category, String manufacturer, Double unitPrice, 
-                     Integer stockQuantity, Integer minimumStock, String dosageForm, String strength) {
+    public Medication(String name, String category, String manufacturer, Double unitPrice,
+            Integer stockQuantity, Integer minimumStock, String dosageForm, String strength) {
         this.name = name;
         this.category = category;
         this.manufacturer = manufacturer;
@@ -66,7 +66,6 @@ public class Medication {
         this.status = "Available";
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -179,7 +178,6 @@ public class Medication {
         this.prescriptionItems = prescriptionItems;
     }
 
-    // Business methods
     public boolean isLowStock() {
         return stockQuantity <= minimumStock;
     }

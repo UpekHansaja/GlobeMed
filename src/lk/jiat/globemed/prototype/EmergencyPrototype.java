@@ -1,8 +1,5 @@
 package lk.jiat.globemed.prototype;
 
-/**
- * Concrete Prototype for emergency appointments
- */
 public class EmergencyPrototype extends AppointmentPrototype {
 
     public EmergencyPrototype() {
@@ -16,11 +13,11 @@ public class EmergencyPrototype extends AppointmentPrototype {
     @Override
     public AppointmentPrototype clone() {
         EmergencyPrototype cloned = (EmergencyPrototype) super.clone();
-        // Deep copy if needed for complex objects (Strings are immutable in Java, so this is optional)
+
         cloned.notes = this.notes;
         cloned.requiredEquipment = this.requiredEquipment;
         cloned.preparationInstructions = this.preparationInstructions;
-        
+
         System.out.println("🚨 Cloned EmergencyPrototype");
         return cloned;
     }

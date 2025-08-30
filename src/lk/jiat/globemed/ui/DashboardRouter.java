@@ -5,10 +5,6 @@ import lk.jiat.globemed.model.Staff;
 
 public class DashboardRouter {
 
-    /**
-     * Open the correct dashboard frame according to staff role name. Role names
-     * expected: "Admin", "Doctor", "Nurse", "Pharmacist", "Accountant"
-     */
     public static void openDashboardForStaff(Staff staff) {
         if (staff == null) {
             throw new IllegalArgumentException("staff is null");
@@ -41,7 +37,7 @@ public class DashboardRouter {
                     new AccountantDashboardForm(staff).setVisible(true);
                     break;
                 default:
-                    // Fallback to generic dashboard
+                    // Fallback 
                     new DashboardForm(staff).setVisible(true);
                     break;
             }

@@ -6,5 +6,5 @@ import lk.jiat.globemed.model.Staff;
 public interface ReportVisitor {
 
     void visitStaffList(List<Staff> staffList);
-    // add more visit methods for patients, billing, etc.
+
 }

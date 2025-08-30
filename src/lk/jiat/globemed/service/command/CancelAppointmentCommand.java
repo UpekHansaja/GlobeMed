@@ -19,7 +19,7 @@ public class CancelAppointmentCommand implements Command {
     @Override
     public void execute() {
         appointmentService.cancelAppointment(appointmentId, reason);
-        // Optionally: create audit log via separate audit mechanism
+
     }
 
     public Long getAppointmentId() {

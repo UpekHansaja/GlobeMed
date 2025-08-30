@@ -21,13 +21,11 @@ public class PharmacistDashboardForm extends JFrame {
     private final MedicationDao medicationDao = new MedicationDao();
     private final PrescriptionDao prescriptionDao = new PrescriptionDao();
 
-    // UI Components
     private JLabel lblTitle;
     private JButton btnLogout;
     private JButton btnProfile;
     private JTabbedPane tabMain;
 
-    // Inventory Tab Components
     private JTable tblMedications;
     private DefaultTableModel medicationTableModel;
     private JButton btnAddMedication;
@@ -39,7 +37,6 @@ public class PharmacistDashboardForm extends JFrame {
     private JComboBox<String> cmbCategoryFilter;
     private JLabel lblInventoryStats;
 
-    // Prescriptions Tab Components
     private JTable tblPrescriptions;
     private DefaultTableModel prescriptionTableModel;
     private JButton btnFillPrescription;
@@ -47,7 +44,6 @@ public class PharmacistDashboardForm extends JFrame {
     private JButton btnRefreshPrescriptions;
     private JComboBox<String> cmbStatusFilter;
 
-    // Reports Tab Components
     private JTextArea txtReportArea;
     private JButton btnGenerateInventoryReport;
     private JButton btnLowStockReport;
@@ -69,9 +65,8 @@ public class PharmacistDashboardForm extends JFrame {
         setSize(1200, 800);
         setLayout(new BorderLayout());
 
-        // Header Panel
         JPanel headerPanel = new JPanel(new BorderLayout(10, 10));
-        lblTitle = new JLabel("💊 Pharmacist Dashboard");
+        lblTitle = new JLabel("Pharmacist Dashboard");
         lblTitle.setFont(lblTitle.getFont().deriveFont(Font.BOLD, 18f));
 
         JPanel headerRight = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -85,13 +80,11 @@ public class PharmacistDashboardForm extends JFrame {
         headerPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
         add(headerPanel, BorderLayout.NORTH);
 
-        // Main Tabbed Pane
         tabMain = new JTabbedPane();
 
-        // Create tabs
-        tabMain.addTab("📦 Inventory", createInventoryTab());
-        tabMain.addTab("📋 Prescriptions", createPrescriptionsTab());
-        tabMain.addTab("📊 Reports", createReportsTab());
+        tabMain.addTab("Inventory", createInventoryTab());
+        tabMain.addTab("Prescriptions", createPrescriptionsTab());
+        tabMain.addTab("Reports", createReportsTab());
 
         add(tabMain, BorderLayout.CENTER);
     }
@@ -100,10 +93,8 @@ public class PharmacistDashboardForm extends JFrame {
         JPanel tabInventory = new JPanel(new BorderLayout(5, 5));
         tabInventory.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Top panel with search and filters
         JPanel topPanel = new JPanel(new BorderLayout(5, 5));
 
-        // Search panel
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         searchPanel.add(new JLabel("🔍 Search:"));
         txtSearchMedication = new JTextField(15);
@@ -117,14 +108,12 @@ public class PharmacistDashboardForm extends JFrame {
 
         topPanel.add(searchPanel, BorderLayout.WEST);
 
-        // Stats panel
         lblInventoryStats = new JLabel("Loading inventory statistics...");
         lblInventoryStats.setHorizontalAlignment(SwingConstants.RIGHT);
         topPanel.add(lblInventoryStats, BorderLayout.EAST);
 
         tabInventory.add(topPanel, BorderLayout.NORTH);
 
-        // Medications table
         String[] columnNames = {"ID", "Name", "Category", "Stock", "Min Stock", "Unit Price", "Dosage Form", "Status", "Expiry"};
         medicationTableModel = new DefaultTableModel(columnNames, 0) {
             @Override
@@ -136,7 +125,6 @@ public class PharmacistDashboardForm extends JFrame {
         tblMedications.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tblMedications.getTableHeader().setReorderingAllowed(false);
 
-        // Custom cell renderer for low stock highlighting
         tblMedications.setDefaultRenderer(Object.class, new javax.swing.table.DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
@@ -144,7 +132,7 @@ public class PharmacistDashboardForm extends JFrame {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
                 if (!isSelected) {
-                    // Highlight low stock items
+
                     Integer stock = (Integer) table.getValueAt(row, 3);
                     Integer minStock = (Integer) table.getValueAt(row, 4);
                     String status = (String) table.getValueAt(row, 7);
@@ -165,7 +153,6 @@ public class PharmacistDashboardForm extends JFrame {
         scrollPane.setBorder(BorderFactory.createTitledBorder("Medication Inventory"));
         tabInventory.add(scrollPane, BorderLayout.CENTER);
 
-        // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         btnAddMedication = new JButton("➕ Add Medication");
         btnEditMedication = new JButton("✏️ Edit");
@@ -185,10 +172,10 @@ public class PharmacistDashboardForm extends JFrame {
     }
 
     private JPanel createPrescriptionsTab() {
+
         JPanel tabPrescriptions = new JPanel(new BorderLayout(5, 5));
         tabPrescriptions.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Filter panel
         JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         filterPanel.add(new JLabel("Status Filter:"));
         cmbStatusFilter = new JComboBox<>(new String[]{"All", "Pending", "Filled", "Cancelled"});
@@ -196,7 +183,6 @@ public class PharmacistDashboardForm extends JFrame {
 
         tabPrescriptions.add(filterPanel, BorderLayout.NORTH);
 
-        // Prescriptions table
         String[] columnNames = {"ID", "Patient", "Doctor", "Prescribed Date", "Status", "Items", "Total Cost"};
         prescriptionTableModel = new DefaultTableModel(columnNames, 0) {
             @Override
@@ -212,7 +198,6 @@ public class PharmacistDashboardForm extends JFrame {
         scrollPane.setBorder(BorderFactory.createTitledBorder("Prescriptions"));
         tabPrescriptions.add(scrollPane, BorderLayout.CENTER);
 
-        // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         btnFillPrescription = new JButton("💊 Fill Prescription");
         btnViewPrescription = new JButton("👁️ View Details");
@@ -228,10 +213,10 @@ public class PharmacistDashboardForm extends JFrame {
     }
 
     private JPanel createReportsTab() {
+
         JPanel tabReports = new JPanel(new BorderLayout(5, 5));
         tabReports.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         btnGenerateInventoryReport = new JButton("📊 Inventory Report");
         btnLowStockReport = new JButton("⚠️ Low Stock Report");
@@ -245,7 +230,6 @@ public class PharmacistDashboardForm extends JFrame {
 
         tabReports.add(buttonPanel, BorderLayout.NORTH);
 
-        // Report display area
         txtReportArea = new JTextArea();
         txtReportArea.setEditable(false);
         txtReportArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
@@ -258,10 +242,9 @@ public class PharmacistDashboardForm extends JFrame {
 
     private void postInit(Staff user) {
         this.currentUser = user;
-        setTitle("💊 Pharmacist Dashboard - " + (currentUser != null ? currentUser.getName() : ""));
+        setTitle("Pharmacist Dashboard - " + (currentUser != null ? currentUser.getName() : ""));
         setLocationRelativeTo(null);
 
-        // Event handlers
         btnLogout.addActionListener(e -> {
             dispose();
             new LoginForm().setVisible(true);
@@ -274,38 +257,33 @@ public class PharmacistDashboardForm extends JFrame {
                     "Profile Information", JOptionPane.INFORMATION_MESSAGE);
         });
 
-        // Inventory actions
         btnAddMedication.addActionListener(this::addMedicationAction);
         btnEditMedication.addActionListener(this::editMedicationAction);
         btnDispense.addActionListener(this::dispenseMedicationAction);
         btnRestock.addActionListener(this::restockMedicationAction);
         btnRefreshInventory.addActionListener(e -> loadMedicationsData());
 
-        // Search and filter actions
         txtSearchMedication.addActionListener(e -> searchMedications());
         cmbCategoryFilter.addActionListener(e -> filterMedicationsByCategory());
 
-        // Prescription actions
         btnFillPrescription.addActionListener(this::fillPrescriptionAction);
         btnViewPrescription.addActionListener(this::viewPrescriptionAction);
         btnRefreshPrescriptions.addActionListener(e -> loadPrescriptionsData());
         cmbStatusFilter.addActionListener(e -> filterPrescriptionsByStatus());
 
-        // Report actions
         btnGenerateInventoryReport.addActionListener(this::generateInventoryReportAction);
         btnLowStockReport.addActionListener(this::generateLowStockReportAction);
         btnExpiryReport.addActionListener(this::generateExpiryReportAction);
         btnExportReport.addActionListener(this::exportReportAction);
 
-        // Load initial data
         loadMedicationsData();
         loadPrescriptionsData();
         updateInventoryStats();
         loadCategoryFilter();
     }
 
-    // ===== DATA LOADING METHODS =====
     private void loadMedicationsData() {
+
         try {
             List<Medication> medications = medicationDao.findAll();
             medicationTableModel.setRowCount(0);
@@ -326,7 +304,7 @@ public class PharmacistDashboardForm extends JFrame {
             }
 
             updateInventoryStats();
-            System.out.println("✅ Loaded " + medications.size() + " medications");
+            System.out.println("Loaded " + medications.size() + " medications");
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
@@ -337,6 +315,7 @@ public class PharmacistDashboardForm extends JFrame {
     }
 
     private void loadPrescriptionsData() {
+
         try {
             List<Prescription> prescriptions = prescriptionDao.findAll();
             prescriptionTableModel.setRowCount(0);
@@ -362,7 +341,7 @@ public class PharmacistDashboardForm extends JFrame {
                 prescriptionTableModel.addRow(row);
             }
 
-            System.out.println("✅ Loaded " + prescriptions.size() + " prescriptions");
+            System.out.println("Loaded " + prescriptions.size() + " prescriptions");
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
@@ -373,10 +352,11 @@ public class PharmacistDashboardForm extends JFrame {
     }
 
     private void updateInventoryStats() {
+
         try {
             Map<String, Object> stats = pharmacistService.getPharmacyStatistics();
             String statsText = String.format(
-                    "📊 Total: %s | 📦 Available: %s | ⚠️ Low Stock: %s | 🚨 Expired: %s | 💰 Value: $%.2f",
+                    "Total: %s | Available: %s | Low Stock: %s | Expired: %s | Value: $%.2f",
                     stats.get("totalMedications"),
                     stats.get("availableMedications"),
                     stats.get("lowStockMedications"),
@@ -401,9 +381,9 @@ public class PharmacistDashboardForm extends JFrame {
             System.err.println("Error loading categories: " + e.getMessage());
         }
     }
-    // ===== SEARCH AND FILTER METHODS =====
 
     private void searchMedications() {
+
         String searchTerm = txtSearchMedication.getText().trim().toLowerCase();
         if (searchTerm.isEmpty()) {
             loadMedicationsData();
@@ -441,7 +421,9 @@ public class PharmacistDashboardForm extends JFrame {
     }
 
     private void filterMedicationsByCategory() {
+
         String selectedCategory = (String) cmbCategoryFilter.getSelectedItem();
+
         if ("All Categories".equals(selectedCategory)) {
             loadMedicationsData();
             return;
@@ -475,6 +457,7 @@ public class PharmacistDashboardForm extends JFrame {
     }
 
     private void filterPrescriptionsByStatus() {
+
         String selectedStatus = (String) cmbStatusFilter.getSelectedItem();
         if ("All".equals(selectedStatus)) {
             loadPrescriptionsData();
@@ -513,9 +496,9 @@ public class PharmacistDashboardForm extends JFrame {
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    // ===== ACTION METHODS =====
 
     private void addMedicationAction(ActionEvent e) {
+
         AddMedicationDialog dialog = new AddMedicationDialog(this);
         dialog.setVisible(true);
 
@@ -537,6 +520,7 @@ public class PharmacistDashboardForm extends JFrame {
     }
 
     private void editMedicationAction(ActionEvent e) {
+
         int selectedRow = tblMedications.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this,
@@ -555,7 +539,6 @@ public class PharmacistDashboardForm extends JFrame {
             return;
         }
 
-        // Show medication details (can be expanded to edit dialog)
         String details = String.format(
                 "Medication Details:\n\n"
                 + "Name: %s\n"
@@ -586,6 +569,7 @@ public class PharmacistDashboardForm extends JFrame {
     }
 
     private void dispenseMedicationAction(ActionEvent e) {
+
         int selectedRow = tblMedications.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this,
@@ -614,6 +598,7 @@ public class PharmacistDashboardForm extends JFrame {
     }
 
     private void restockMedicationAction(ActionEvent e) {
+
         int selectedRow = tblMedications.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this,
@@ -671,7 +656,9 @@ public class PharmacistDashboardForm extends JFrame {
     }
 
     private void fillPrescriptionAction(ActionEvent e) {
+
         int selectedRow = tblPrescriptions.getSelectedRow();
+
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this,
                     "Please select a prescription to fill.",
@@ -696,7 +683,6 @@ public class PharmacistDashboardForm extends JFrame {
             return;
         }
 
-        // Simple confirmation dialog for now
         int result = JOptionPane.showConfirmDialog(this,
                 "Fill prescription for patient: " + prescription.getPatient().getFullName() + "?\n"
                 + "Total cost: $" + String.format("%.2f", prescription.getTotalCost()),
@@ -722,7 +708,9 @@ public class PharmacistDashboardForm extends JFrame {
     }
 
     private void viewPrescriptionAction(ActionEvent e) {
+
         int selectedRow = tblPrescriptions.getSelectedRow();
+
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this,
                     "Please select a prescription to view.",
@@ -769,7 +757,6 @@ public class PharmacistDashboardForm extends JFrame {
         JOptionPane.showMessageDialog(this, scrollPane, "Prescription Details", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    // ===== REPORT GENERATION METHODS =====
     private void generateInventoryReportAction(ActionEvent e) {
         try {
             String report = pharmacistService.generateInventoryReport();

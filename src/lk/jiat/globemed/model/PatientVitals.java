@@ -22,7 +22,6 @@ public class PatientVitals {
     @Column(nullable = false)
     private LocalDateTime recordedAt;
 
-    // Vital signs
     private Double temperature; // in Celsius
     private Integer systolicBP; // Systolic Blood Pressure
     private Integer diastolicBP; // Diastolic Blood Pressure
@@ -35,8 +34,8 @@ public class PatientVitals {
     @Column(length = 500)
     private String notes;
 
-    // Constructors
-    public PatientVitals() {}
+    public PatientVitals() {
+    }
 
     public PatientVitals(Patient patient, Staff nurse) {
         this.patient = patient;
@@ -44,7 +43,6 @@ public class PatientVitals {
         this.recordedAt = LocalDateTime.now();
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -149,7 +147,6 @@ public class PatientVitals {
         this.notes = notes;
     }
 
-    // Business methods
     public String getBloodPressure() {
         if (systolicBP != null && diastolicBP != null) {
             return systolicBP + "/" + diastolicBP;
@@ -162,8 +159,8 @@ public class PatientVitals {
     }
 
     public boolean isBloodPressureHigh() {
-        return systolicBP != null && diastolicBP != null && 
-               (systolicBP > 140 || diastolicBP > 90);
+        return systolicBP != null && diastolicBP != null
+                && (systolicBP > 140 || diastolicBP > 90);
     }
 
     public boolean isHeartRateAbnormal() {

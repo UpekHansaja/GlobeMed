@@ -17,11 +17,6 @@ import lk.jiat.globemed.service.command.CommandInvoker;
 import lk.jiat.globemed.service.command.CreateAppointmentCommand;
 import lk.jiat.globemed.service.command.RescheduleAppointmentCommand;
 
-/**
- * AppointmentForm - Swing UI for managing appointments. Programmatic
- * initComponents so it runs immediately; .form placeholder is included for
- * NetBeans.
- */
 public class AppointmentForm extends JFrame {
 
     private JTable tblAppointments;
@@ -32,7 +27,7 @@ public class AppointmentForm extends JFrame {
 
     private JComboBox<String> cmbPatients;
     private JComboBox<String> cmbDoctors;
-    private JTextField txtDateTime; // format: yyyy-MM-dd HH:mm
+    private JTextField txtDateTime; // yyyy-MM-dd HH:mm
     private JComboBox<String> cmbStatus;
 
     private final AppointmentService appointmentService = new AppointmentService();
@@ -63,7 +58,6 @@ public class AppointmentForm extends JFrame {
         setSize(1200, 650);
         setLayout(new BorderLayout(8, 8));
 
-        // header
         JPanel header = new JPanel(new BorderLayout());
         JLabel lbl = new JLabel("Appointment Management");
         lbl.setFont(lbl.getFont().deriveFont(Font.BOLD, 18f));
@@ -76,7 +70,6 @@ public class AppointmentForm extends JFrame {
         header.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
         add(header, BorderLayout.NORTH);
 
-        // center split: left = form, right = table
         JPanel left = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(6, 6, 6, 6);
@@ -130,7 +123,6 @@ public class AppointmentForm extends JFrame {
         gbc.gridwidth = 2;
         left.add(actionBtns, gbc);
 
-        // right: table
         tblAppointments = new JTable();
         JScrollPane tableScroll = new JScrollPane(tblAppointments);
 
@@ -138,7 +130,6 @@ public class AppointmentForm extends JFrame {
         split.setDividerLocation(580);
         add(split, BorderLayout.CENTER);
 
-        // wiring listeners
         btnNew.addActionListener(e -> onCreateAppointment());
         btnCancel.addActionListener(e -> onCancelAppointment());
         btnReschedule.addActionListener(e -> onRescheduleAppointment());
@@ -212,7 +203,6 @@ public class AppointmentForm extends JFrame {
             }
             Patient selectedPatient = patientList.get(pIndex);
 
-            // find doctor by ID extracted from combo display
             String docDisplay = (String) cmbDoctors.getSelectedItem();
             Long docId = Long.valueOf(docDisplay.split(" - ")[0]);
             Staff doctor = staffList.stream().filter(s -> s.getId().equals(docId)).findFirst().orElse(null);
@@ -289,7 +279,6 @@ public class AppointmentForm extends JFrame {
         }
     }
 
-    // main for quick test
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new AppointmentForm().setVisible(true);

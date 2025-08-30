@@ -32,10 +32,6 @@ public class PatientService {
         return patientDao.findAll();
     }
 
-    /**
-     * Find patients linked to a given doctor. This assumes Appointment has a
-     * reference to both Patient and Doctor (Staff).
-     */
     public List<Patient> findByDoctor(Long doctorId) {
         return patientDao.findByDoctor(doctorId);
     }

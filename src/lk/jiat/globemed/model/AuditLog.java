@@ -14,13 +14,12 @@ public class AuditLog {
     private String entityName;
     private Long entityId;
     private String action; // CREATE, UPDATE, DELETE
-    private String performedBy; // staff email or id
+    private String performedBy;
     private LocalDateTime performedAt;
 
     @Column(length = 2000)
     private String details;
 
-    // getters & setters
     public Long getId() {
         return id;
     }

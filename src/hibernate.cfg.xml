@@ -5,30 +5,23 @@
 
 <hibernate-configuration>
     <session-factory>
-        <!-- Database connection settings - ALL PROPERTIES MUST COME FIRST -->
+        
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/globemed?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;createDatabaseIfNotExist=true&amp;serverTimezone=UTC</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">Upek@2004</property>
         
-        <!-- Database dialect -->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         
-        <!-- Connection pool settings -->
         <property name="hibernate.connection.pool_size">10</property>
         
-        <!-- Show SQL queries in console (optional, good for debugging) -->
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
         
-        <!-- Automatically create/update database schema -->
         <property name="hibernate.hbm2ddl.auto">update</property>
         
-        <!-- Current session context -->
         <property name="hibernate.current_session_context_class">thread</property>
         
-        <!-- MAPPINGS MUST COME AFTER ALL PROPERTIES -->
-        <!-- Add your entity mappings here -->
         <mapping class="lk.jiat.globemed.model.Patient"/>
         <mapping class="lk.jiat.globemed.model.Staff"/>
         <mapping class="lk.jiat.globemed.model.Appointment"/>
@@ -36,17 +29,17 @@
         <mapping class="lk.jiat.globemed.model.Role"/>
         <mapping class="lk.jiat.globemed.model.Permission"/>
         <mapping class="lk.jiat.globemed.model.AuditLog"/>
-        <!-- New composite pattern entities -->
+        
         <mapping class="lk.jiat.globemed.model.MedicalUnit"/>
         <mapping class="lk.jiat.globemed.model.Department"/>
         <mapping class="lk.jiat.globemed.model.Hospital"/>
-        <!-- Pharmacy entities -->
+        
         <mapping class="lk.jiat.globemed.model.Medication"/>
         <mapping class="lk.jiat.globemed.model.Prescription"/>
         <mapping class="lk.jiat.globemed.model.PrescriptionItem"/>
-        <!-- Additional entities -->
+        
         <mapping class="lk.jiat.globemed.model.TimeSlot"/>
-        <!-- Nursing entities -->
+        
         <mapping class="lk.jiat.globemed.model.PatientVitals"/>
         <mapping class="lk.jiat.globemed.model.NursingTask"/>
         

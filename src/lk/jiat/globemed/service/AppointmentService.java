@@ -6,10 +6,6 @@ import lk.jiat.globemed.dao.AppointmentDao;
 import lk.jiat.globemed.model.Appointment;
 import lk.jiat.globemed.model.Staff;
 
-/**
- * Business service for appointments (thin layer above AppointmentDao). Command
- * objects will call this service to perform actions.
- */
 public class AppointmentService {
 
     private final AppointmentDao appointmentDao = new AppointmentDao();
@@ -18,7 +14,7 @@ public class AppointmentService {
         if (appointment == null) {
             throw new IllegalArgumentException("appointment is null");
         }
-        // default status if not set
+
         if (appointment.getStatus() == null || appointment.getStatus().isEmpty()) {
             appointment.setStatus("Scheduled");
         }
@@ -47,7 +43,7 @@ public class AppointmentService {
             throw new IllegalArgumentException("Appointment not found: " + appointmentId);
         }
         ap.setStatus("Cancelled");
-        // optionally record reason somewhere (audit log or appointment.notes if present)
+
         return appointmentDao.update(ap);
     }
 

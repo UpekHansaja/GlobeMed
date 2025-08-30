@@ -3,9 +3,6 @@ package lk.jiat.globemed.service.command;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-/**
- * Simple invoker that executes commands and keeps history (for potential undo).
- */
 public class CommandInvoker {
 
     private final Deque<Command> history = new ArrayDeque<>();

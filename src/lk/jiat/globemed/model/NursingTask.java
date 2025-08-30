@@ -48,8 +48,8 @@ public class NursingTask {
     @Column(length = 1000)
     private String completionNotes;
 
-    // Constructors
-    public NursingTask() {}
+    public NursingTask() {
+    }
 
     public NursingTask(String title, String description, Staff assignedNurse, Staff createdBy) {
         this.title = title;
@@ -61,7 +61,6 @@ public class NursingTask {
         this.priority = "Medium";
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -166,10 +165,9 @@ public class NursingTask {
         this.completionNotes = completionNotes;
     }
 
-    // Business methods
     public boolean isOverdue() {
-        return dueDateTime != null && LocalDateTime.now().isAfter(dueDateTime) && 
-               !"Completed".equals(status) && !"Cancelled".equals(status);
+        return dueDateTime != null && LocalDateTime.now().isAfter(dueDateTime)
+                && !"Completed".equals(status) && !"Cancelled".equals(status);
     }
 
     public boolean isHighPriority() {

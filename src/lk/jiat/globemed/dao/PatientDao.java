@@ -14,7 +14,7 @@ public class PatientDao {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction();
-            session.persist(patient); // Hibernate 6/7: persist to create
+            session.persist(patient);
             tx.commit();
             return patient;
         } catch (Exception e) {
@@ -61,7 +61,7 @@ public class PatientDao {
                 return false;
             }
             tx = session.beginTransaction();
-            session.remove(p); // remove managed entity
+            session.remove(p);
             tx.commit();
             return true;
         } catch (Exception e) {
@@ -72,7 +72,6 @@ public class PatientDao {
         }
     }
 
-    // Additional useful lookup
     public List<Patient> findByDoctor(Long doctorId) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery(

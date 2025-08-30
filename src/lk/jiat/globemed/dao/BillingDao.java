@@ -72,7 +72,6 @@ public class BillingDao {
         }
     }
 
-    // Helpers
     public List<BillingRecord> findByPatientId(Long patientId) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<BillingRecord> q = session.createQuery("FROM BillingRecord b WHERE b.patient.id = :pid", BillingRecord.class);

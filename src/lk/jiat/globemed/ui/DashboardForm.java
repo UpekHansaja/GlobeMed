@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package lk.jiat.globemed.ui;
 
 import lk.jiat.globemed.model.Staff;
@@ -14,9 +10,6 @@ public class DashboardForm extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DashboardForm.class.getName());
 
-    /**
-     * Creates new form DashboardForm
-     */
     public DashboardForm(Staff staff) {
         initComponents();
     }

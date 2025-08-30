@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package lk.jiat.globemed.ui;
 
 import javax.swing.JOptionPane;
@@ -17,9 +13,6 @@ public class LoginForm extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginForm.class.getName());
     private StaffDao staffDao = new StaffDao();
 
-    /**
-     * Creates new form LoginForm
-     */
     public LoginForm() {
         initComponents();
     }
@@ -129,7 +122,7 @@ public class LoginForm extends javax.swing.JFrame {
             // TODO: Redirect based on role
 //            new DashboardForm(staff).setVisible(true);
 //            this.dispose();
-            // Open role-based dashboard and dispose login form
+//             
             DashboardRouter.openDashboardForStaff(staff);
             this.dispose();
 

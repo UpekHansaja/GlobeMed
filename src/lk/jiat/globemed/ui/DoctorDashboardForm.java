@@ -14,10 +14,6 @@ import lk.jiat.globemed.model.Staff;
 import lk.jiat.globemed.service.AppointmentService;
 import lk.jiat.globemed.service.PatientService;
 
-/**
- * Doctor Dashboard Form Shows only the logged-in doctor’s appointments and
- * patients
- */
 public class DoctorDashboardForm extends JFrame {
 
     private final Staff loggedInDoctor;
@@ -53,7 +49,6 @@ public class DoctorDashboardForm extends JFrame {
 
         tabbedPane = new JTabbedPane();
 
-        // ================== Appointments Tab ==================
         JPanel appointmentsPanel = new JPanel(new BorderLayout());
 
         appointmentTableModel = new DefaultTableModel(
@@ -79,7 +74,6 @@ public class DoctorDashboardForm extends JFrame {
         appointmentsPanel.add(appointmentScroll, BorderLayout.CENTER);
         appointmentsPanel.add(appointmentBtnPanel, BorderLayout.SOUTH);
 
-        // ================== Patients Tab ==================
         JPanel patientsPanel = new JPanel(new BorderLayout());
 
         patientTableModel = new DefaultTableModel(
@@ -90,11 +84,9 @@ public class DoctorDashboardForm extends JFrame {
         JScrollPane patientScroll = new JScrollPane(patientTable);
         patientsPanel.add(patientScroll, BorderLayout.CENTER);
 
-        // ================== Tabs ==================
         tabbedPane.addTab("Appointments", appointmentsPanel);
         tabbedPane.addTab("Patients", patientsPanel);
 
-        // ================== Top Controls ==================
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton btnLogout = new JButton("Logout");
         btnLogout.addActionListener(e -> logout());
@@ -106,7 +98,6 @@ public class DoctorDashboardForm extends JFrame {
         getContentPane().add(tabbedPane, BorderLayout.CENTER);
     }
 
-    // ================== Data Loading ==================
     private void loadAppointments() {
         appointmentTableModel.setRowCount(0);
         List<Appointment> appointments = appointmentService.getAppointmentsForDoctor(loggedInDoctor);
@@ -132,7 +123,6 @@ public class DoctorDashboardForm extends JFrame {
         }
     }
 
-    // ================== Actions ==================
     private void onNewAppointment(ActionEvent e) {
 //        JOptionPane.showMessageDialog(this,
 //                "TODO: Open NewAppointmentDialog and save via AppointmentService",
@@ -182,18 +172,16 @@ public class DoctorDashboardForm extends JFrame {
 
     private void logout() {
         this.dispose();
-        new LoginForm().setVisible(true); // assuming LoginForm exists
+        new LoginForm().setVisible(true);
     }
 
-    // ================== Main for test ==================
     public static void main(String[] args) {
-        // Dummy doctor to test UI
+
         Staff doc = new Staff();
         doc.setId(1L);
         doc.setName("Alice Fernando");
         doc.setEmail("alice@globemed.lk");
 
-        // Fake role
         lk.jiat.globemed.model.Role doctorRole = new lk.jiat.globemed.model.Role();
         doctorRole.setName("Doctor");
         doc.setRole(doctorRole);

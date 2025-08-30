@@ -23,13 +23,11 @@ public class NurseDashboardForm extends JFrame {
     private final PatientDao patientDao = new PatientDao();
     private final AppointmentDao appointmentDao = new AppointmentDao();
 
-    // UI Components
     private JLabel lblTitle;
     private JButton btnLogout;
     private JButton btnProfile;
     private JTabbedPane tabMain;
 
-    // Patients Tab Components
     private JTable tblPatients;
     private DefaultTableModel patientsTableModel;
     private JButton btnUpdateVitals;
@@ -38,7 +36,6 @@ public class NurseDashboardForm extends JFrame {
     private JTextField txtSearchPatients;
     private JLabel lblPatientStats;
 
-    // Tasks Tab Components
     private JTable tblTasks;
     private DefaultTableModel tasksTableModel;
     private JButton btnCompleteTask;
@@ -48,7 +45,6 @@ public class NurseDashboardForm extends JFrame {
     private JComboBox<String> cmbTaskStatusFilter;
     private JComboBox<String> cmbTaskPriorityFilter;
 
-    // Appointments Tab Components
     private JTable tblAppointments;
     private DefaultTableModel appointmentsTableModel;
     private JButton btnUpdateAppointmentStatus;
@@ -56,7 +52,6 @@ public class NurseDashboardForm extends JFrame {
     private JButton btnRefreshAppointments;
     private JComboBox<String> cmbAppointmentFilter;
 
-    // Reports Tab Components
     private JTextArea txtReportArea;
     private JButton btnGenerateNursingReport;
     private JButton btnGenerateVitalsReport;
@@ -73,18 +68,18 @@ public class NurseDashboardForm extends JFrame {
     }
 
     private void initComponents() {
+
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setSize(1200, 800);
         setLayout(new BorderLayout());
 
-        // Header Panel
         JPanel headerPanel = new JPanel(new BorderLayout(10, 10));
         lblTitle = new JLabel("🩺 Nurse Dashboard");
         lblTitle.setFont(lblTitle.getFont().deriveFont(Font.BOLD, 18f));
 
         JPanel headerRight = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        btnProfile = new JButton("👤 Profile");
-        btnLogout = new JButton("🚪 Logout");
+        btnProfile = new JButton("Profile");
+        btnLogout = new JButton("Logout");
         headerRight.add(btnProfile);
         headerRight.add(btnLogout);
 
@@ -93,26 +88,23 @@ public class NurseDashboardForm extends JFrame {
         headerPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
         add(headerPanel, BorderLayout.NORTH);
 
-        // Main Tabbed Pane
         tabMain = new JTabbedPane();
 
-        // Create tabs
-        tabMain.addTab("👥 Patients", createPatientsTab());
-        tabMain.addTab("📋 Tasks", createTasksTab());
-        tabMain.addTab("📅 Appointments", createAppointmentsTab());
-        tabMain.addTab("📊 Reports", createReportsTab());
+        tabMain.addTab("Patients", createPatientsTab());
+        tabMain.addTab("Tasks", createTasksTab());
+        tabMain.addTab("Appointments", createAppointmentsTab());
+        tabMain.addTab("Reports", createReportsTab());
 
         add(tabMain, BorderLayout.CENTER);
     }
 
     private JPanel createPatientsTab() {
+
         JPanel tabPatients = new JPanel(new BorderLayout(5, 5));
         tabPatients.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Top panel with search and stats
         JPanel topPanel = new JPanel(new BorderLayout(5, 5));
 
-        // Search panel
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         searchPanel.add(new JLabel("🔍 Search:"));
         txtSearchPatients = new JTextField(15);
@@ -121,14 +113,12 @@ public class NurseDashboardForm extends JFrame {
 
         topPanel.add(searchPanel, BorderLayout.WEST);
 
-        // Stats panel
         lblPatientStats = new JLabel("Loading patient statistics...");
         lblPatientStats.setHorizontalAlignment(SwingConstants.RIGHT);
         topPanel.add(lblPatientStats, BorderLayout.EAST);
 
         tabPatients.add(topPanel, BorderLayout.NORTH);
 
-        // Patients table
         String[] columnNames = {"ID", "Name", "Age", "Gender", "Contact", "Last Vitals", "Status"};
         patientsTableModel = new DefaultTableModel(columnNames, 0) {
             @Override
@@ -144,7 +134,6 @@ public class NurseDashboardForm extends JFrame {
         scrollPane.setBorder(BorderFactory.createTitledBorder("Patient List"));
         tabPatients.add(scrollPane, BorderLayout.CENTER);
 
-        // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         btnUpdateVitals = new JButton("🩺 Update Vitals");
         btnViewVitalHistory = new JButton("📈 Vital History");
@@ -160,10 +149,10 @@ public class NurseDashboardForm extends JFrame {
     }
 
     private JPanel createTasksTab() {
+
         JPanel tabTasks = new JPanel(new BorderLayout(5, 5));
         tabTasks.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Filter panel
         JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         filterPanel.add(new JLabel("Status:"));
         cmbTaskStatusFilter = new JComboBox<>(new String[]{"All", "Pending", "In Progress", "Completed", "Cancelled"});
@@ -175,7 +164,6 @@ public class NurseDashboardForm extends JFrame {
 
         tabTasks.add(filterPanel, BorderLayout.NORTH);
 
-        // Tasks table
         String[] columnNames = {"ID", "Title", "Patient", "Priority", "Status", "Due Date", "Type"};
         tasksTableModel = new DefaultTableModel(columnNames, 0) {
             @Override
@@ -187,7 +175,6 @@ public class NurseDashboardForm extends JFrame {
         tblTasks.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tblTasks.getTableHeader().setReorderingAllowed(false);
 
-        // Custom cell renderer for priority and status highlighting
         tblTasks.setDefaultRenderer(Object.class, new javax.swing.table.DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
@@ -216,7 +203,6 @@ public class NurseDashboardForm extends JFrame {
         scrollPane.setBorder(BorderFactory.createTitledBorder("Nursing Tasks"));
         tabTasks.add(scrollPane, BorderLayout.CENTER);
 
-        // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         btnCompleteTask = new JButton("✅ Complete Task");
         btnStartTask = new JButton("▶️ Start Task");
@@ -234,10 +220,10 @@ public class NurseDashboardForm extends JFrame {
     }
 
     private JPanel createAppointmentsTab() {
+
         JPanel tabAppointments = new JPanel(new BorderLayout(5, 5));
         tabAppointments.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Filter panel
         JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         filterPanel.add(new JLabel("Filter:"));
         cmbAppointmentFilter = new JComboBox<>(new String[]{"All", "Today", "Scheduled", "Completed", "Cancelled"});
@@ -245,7 +231,6 @@ public class NurseDashboardForm extends JFrame {
 
         tabAppointments.add(filterPanel, BorderLayout.NORTH);
 
-        // Appointments table
         String[] columnNames = {"ID", "Patient", "Doctor", "Date & Time", "Status"};
         appointmentsTableModel = new DefaultTableModel(columnNames, 0) {
             @Override
@@ -261,7 +246,6 @@ public class NurseDashboardForm extends JFrame {
         scrollPane.setBorder(BorderFactory.createTitledBorder("Appointments"));
         tabAppointments.add(scrollPane, BorderLayout.CENTER);
 
-        // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         btnUpdateAppointmentStatus = new JButton("📝 Update Status");
         btnViewAppointmentDetails = new JButton("👁️ View Details");
@@ -277,10 +261,10 @@ public class NurseDashboardForm extends JFrame {
     }
 
     private JPanel createReportsTab() {
+
         JPanel tabReports = new JPanel(new BorderLayout(5, 5));
         tabReports.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         btnGenerateNursingReport = new JButton("📊 Nursing Report");
         btnGenerateVitalsReport = new JButton("🩺 Vitals Report");
@@ -292,7 +276,6 @@ public class NurseDashboardForm extends JFrame {
 
         tabReports.add(buttonPanel, BorderLayout.NORTH);
 
-        // Report display area
         txtReportArea = new JTextArea();
         txtReportArea.setEditable(false);
         txtReportArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
@@ -309,7 +292,6 @@ public class NurseDashboardForm extends JFrame {
         setTitle("🩺 Nurse Dashboard - " + (currentUser != null ? currentUser.getName() : ""));
         setLocationRelativeTo(null);
 
-        // Event handlers
         btnLogout.addActionListener(e -> {
             dispose();
             new LoginForm().setVisible(true);
@@ -322,44 +304,37 @@ public class NurseDashboardForm extends JFrame {
                     "Profile Information", JOptionPane.INFORMATION_MESSAGE);
         });
 
-        // Patient actions
         btnUpdateVitals.addActionListener(this::updateVitalsAction);
         btnViewVitalHistory.addActionListener(this::viewVitalHistoryAction);
         btnRefreshPatients.addActionListener(e -> loadPatientsData());
 
-        // Search action
         txtSearchPatients.addActionListener(e -> searchPatients());
 
-        // Task actions
         btnCompleteTask.addActionListener(this::completeTaskAction);
         btnStartTask.addActionListener(this::startTaskAction);
         btnCreateTask.addActionListener(this::createTaskAction);
         btnRefreshTasks.addActionListener(e -> loadTasksData());
 
-        // Filter actions
         cmbTaskStatusFilter.addActionListener(e -> filterTasksByStatus());
         cmbTaskPriorityFilter.addActionListener(e -> filterTasksByPriority());
 
-        // Appointment actions
         btnUpdateAppointmentStatus.addActionListener(this::updateAppointmentStatusAction);
         btnViewAppointmentDetails.addActionListener(this::viewAppointmentDetailsAction);
         btnRefreshAppointments.addActionListener(e -> loadAppointmentsData());
         cmbAppointmentFilter.addActionListener(e -> filterAppointments());
 
-        // Report actions
         btnGenerateNursingReport.addActionListener(this::generateNursingReportAction);
         btnGenerateVitalsReport.addActionListener(this::generateVitalsReportAction);
         btnExportReport.addActionListener(this::exportReportAction);
 
-        // Load initial data
         loadPatientsData();
         loadTasksData();
         loadAppointmentsData();
         updatePatientStats();
     }
 
-    // ===== DATA LOADING METHODS =====
     private void loadPatientsData() {
+
         try {
             List<Patient> patients = nurseService.getAllPatients();
             patientsTableModel.setRowCount(0);
@@ -379,13 +354,13 @@ public class NurseDashboardForm extends JFrame {
                     patient.getGender() != null ? patient.getGender() : "N/A",
                     patient.getContactNumber() != null ? patient.getContactNumber() : "N/A",
                     lastVitals,
-                    "Active" // Could be enhanced with actual status
+                    "Active"
                 };
                 patientsTableModel.addRow(row);
             }
 
             updatePatientStats();
-            System.out.println("✅ Loaded " + patients.size() + " patients");
+            System.out.println("Loaded " + patients.size() + " patients");
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
@@ -417,7 +392,7 @@ public class NurseDashboardForm extends JFrame {
                 tasksTableModel.addRow(row);
             }
 
-            System.out.println("✅ Loaded " + tasks.size() + " tasks");
+            System.out.println("Loaded " + tasks.size() + " tasks");
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
@@ -428,6 +403,7 @@ public class NurseDashboardForm extends JFrame {
     }
 
     private void loadAppointmentsData() {
+
         try {
             List<Appointment> appointments = nurseService.getTodaysAppointments();
             appointmentsTableModel.setRowCount(0);
@@ -443,7 +419,7 @@ public class NurseDashboardForm extends JFrame {
                 appointmentsTableModel.addRow(row);
             }
 
-            System.out.println("✅ Loaded " + appointments.size() + " appointments");
+            System.out.println("Loaded " + appointments.size() + " appointments");
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
@@ -454,11 +430,12 @@ public class NurseDashboardForm extends JFrame {
     }
 
     private void updatePatientStats() {
+
         try {
             if (currentUser != null) {
                 Map<String, Object> stats = nurseService.getNursingStatistics(currentUser.getId());
                 String statsText = String.format(
-                        "📋 Tasks: %s | ⏳ Pending: %s | 🔄 In Progress: %s | ✅ Completed: %s | ⚠️ Overdue: %s",
+                        "Tasks: %s | Pending: %s | In Progress: %s | Completed: %s | Overdue: %s",
                         stats.get("totalTasks"),
                         stats.get("pendingTasks"),
                         stats.get("inProgressTasks"),
@@ -471,9 +448,9 @@ public class NurseDashboardForm extends JFrame {
             lblPatientStats.setText("Error loading statistics");
         }
     }
-    // ===== SEARCH AND FILTER METHODS =====
 
     private void searchPatients() {
+
         String searchTerm = txtSearchPatients.getText().trim();
         if (searchTerm.isEmpty()) {
             loadPatientsData();
@@ -623,8 +600,8 @@ public class NurseDashboardForm extends JFrame {
         }
     }
 
-    // ===== ACTION METHODS =====
     private void updateVitalsAction(ActionEvent e) {
+
         int selectedRow = tblPatients.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this,
@@ -653,6 +630,7 @@ public class NurseDashboardForm extends JFrame {
     }
 
     private void viewVitalHistoryAction(ActionEvent e) {
+
         int selectedRow = tblPatients.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this,
@@ -735,6 +713,7 @@ public class NurseDashboardForm extends JFrame {
     }
 
     private void startTaskAction(ActionEvent e) {
+
         int selectedRow = tblTasks.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this,
@@ -861,8 +840,8 @@ public class NurseDashboardForm extends JFrame {
         JOptionPane.showMessageDialog(this, details, "Appointment Details", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    // ===== REPORT GENERATION METHODS =====
     private void generateNursingReportAction(ActionEvent e) {
+
         if (currentUser == null) {
             JOptionPane.showMessageDialog(this,
                     "User information not available.",
@@ -904,6 +883,7 @@ public class NurseDashboardForm extends JFrame {
     }
 
     private void exportReportAction(ActionEvent e) {
+
         if (txtReportArea.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this,
                     "No report to export. Please generate a report first.",
@@ -916,6 +896,7 @@ public class NurseDashboardForm extends JFrame {
         fileChooser.setSelectedFile(new java.io.File("nursing_report.txt"));
 
         int result = fileChooser.showSaveDialog(this);
+
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
                 java.io.File file = fileChooser.getSelectedFile();

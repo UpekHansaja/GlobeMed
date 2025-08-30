@@ -18,7 +18,7 @@ public class Staff {
     private String email;
 
     @Column(nullable = false)
-    private String password; // ⚠️ hash in real apps
+    private String password;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -111,5 +111,4 @@ public class Staff {
         this.appointments = appointments;
     }
 
-    // toString()
 }

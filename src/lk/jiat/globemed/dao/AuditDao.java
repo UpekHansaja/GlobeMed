@@ -7,7 +7,6 @@ import org.hibernate.Transaction;
 
 public class AuditDao {
 
-    // keep original single-session create for backward compatibility
     public AuditLog create(AuditLog log) {
         Transaction tx = null;
         try (Session s = HibernateUtil.getSessionFactory().openSession()) {
@@ -20,17 +19,13 @@ public class AuditDao {
                 try {
                     tx.rollback();
                 } catch (Exception ex) {
-                    /* ignore */ }
+                    System.out.println("AuditLog create");
+                }
             }
             throw e;
         }
     }
 
-    /**
-     * Persist an AuditLog using an existing Session. This method does NOT
-     * start/commit/rollback transactions; transaction management must be
-     * handled by the caller.
-     */
     public void persistWithSession(Session session, AuditLog log) {
         if (session == null) {
             throw new IllegalArgumentException("session is null");

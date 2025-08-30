@@ -41,7 +41,6 @@ public class AddMedicationDialog extends JDialog {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.WEST;
 
-        // Medication Name
         JLabel lblName = new JLabel("Medication Name :");
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -51,7 +50,6 @@ public class AddMedicationDialog extends JDialog {
         gbc.gridy = 0;
         mainPanel.add(txtName, gbc);
 
-        // Description
         JLabel lblDescription = new JLabel("Description:");
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -64,7 +62,6 @@ public class AddMedicationDialog extends JDialog {
         gbc.gridy = 1;
         mainPanel.add(scrollDesc, gbc);
 
-        // Category
         JLabel lblCategory = new JLabel("Category :");
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -78,7 +75,6 @@ public class AddMedicationDialog extends JDialog {
         gbc.gridy = 2;
         mainPanel.add(cmbCategory, gbc);
 
-        // Manufacturer
         JLabel lblManufacturer = new JLabel("Manufacturer :");
         gbc.gridx = 0;
         gbc.gridy = 3;
@@ -88,7 +84,6 @@ public class AddMedicationDialog extends JDialog {
         gbc.gridy = 3;
         mainPanel.add(txtManufacturer, gbc);
 
-        // Unit Price
         JLabel lblUnitPrice = new JLabel("Unit Price (LKR) :");
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -98,7 +93,6 @@ public class AddMedicationDialog extends JDialog {
         gbc.gridy = 4;
         mainPanel.add(txtUnitPrice, gbc);
 
-        // Stock Quantity
         JLabel lblStockQuantity = new JLabel("Stock Quantity :");
         gbc.gridx = 0;
         gbc.gridy = 5;
@@ -108,7 +102,6 @@ public class AddMedicationDialog extends JDialog {
         gbc.gridy = 5;
         mainPanel.add(txtStockQuantity, gbc);
 
-        // Minimum Stock
         JLabel lblMinimumStock = new JLabel("Minimum Stock :");
         gbc.gridx = 0;
         gbc.gridy = 6;
@@ -118,7 +111,6 @@ public class AddMedicationDialog extends JDialog {
         gbc.gridy = 6;
         mainPanel.add(txtMinimumStock, gbc);
 
-        // Dosage Form
         JLabel lblDosageForm = new JLabel("Dosage Form :");
         gbc.gridx = 0;
         gbc.gridy = 7;
@@ -131,7 +123,6 @@ public class AddMedicationDialog extends JDialog {
         gbc.gridy = 7;
         mainPanel.add(cmbDosageForm, gbc);
 
-        // Strength
         JLabel lblStrength = new JLabel("Strength:");
         gbc.gridx = 0;
         gbc.gridy = 8;
@@ -142,7 +133,6 @@ public class AddMedicationDialog extends JDialog {
         gbc.gridy = 8;
         mainPanel.add(txtStrength, gbc);
 
-        // Expiry Date
         JLabel lblExpiryDate = new JLabel("Expiry Date:");
         gbc.gridx = 0;
         gbc.gridy = 9;
@@ -153,7 +143,6 @@ public class AddMedicationDialog extends JDialog {
         gbc.gridy = 9;
         mainPanel.add(txtExpiryDate, gbc);
 
-        // Batch Number
         JLabel lblBatchNumber = new JLabel("Batch Number:");
         gbc.gridx = 0;
         gbc.gridy = 10;
@@ -163,7 +152,6 @@ public class AddMedicationDialog extends JDialog {
         gbc.gridy = 10;
         mainPanel.add(txtBatchNumber, gbc);
 
-        // Status
         JLabel lblStatus = new JLabel("Status:");
         gbc.gridx = 0;
         gbc.gridy = 11;
@@ -177,7 +165,6 @@ public class AddMedicationDialog extends JDialog {
 
         add(new JScrollPane(mainPanel), BorderLayout.CENTER);
 
-        // Buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnSave = new JButton("💾 Save");
         btnCancel = new JButton("❌ Cancel");
@@ -185,17 +172,15 @@ public class AddMedicationDialog extends JDialog {
         buttonPanel.add(btnCancel);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // Event handlers
         btnSave.addActionListener(this::onSave);
         btnCancel.addActionListener(this::onCancel);
 
-        // Set default values
         cmbStatus.setSelectedItem("Available");
     }
 
     private void onSave(ActionEvent e) {
         try {
-            // Validate required fields
+
             if (txtName.getText().trim().isEmpty()) {
                 showError("Medication name is required.");
                 return;
@@ -231,7 +216,6 @@ public class AddMedicationDialog extends JDialog {
                 return;
             }
 
-            // Parse numeric values
             double unitPrice;
             int stockQuantity;
             int minimumStock;
@@ -269,7 +253,6 @@ public class AddMedicationDialog extends JDialog {
                 return;
             }
 
-            // Parse expiry date if provided
             LocalDate expiryDate = null;
             if (!txtExpiryDate.getText().trim().isEmpty()) {
                 try {
@@ -280,7 +263,6 @@ public class AddMedicationDialog extends JDialog {
                 }
             }
 
-            // Create medication object
             Medication medication = new Medication();
             medication.setName(txtName.getText().trim());
             medication.setDescription(txtDescription.getText().trim());

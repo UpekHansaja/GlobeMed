@@ -5,14 +5,6 @@ import java.util.List;
 import lk.jiat.globemed.model.AuditLog;
 import lk.jiat.globemed.model.Staff;
 
-/**
- * Decorator around StaffDao that writes AuditLog entries after
- * create/update/delete.
- *
- * Note: audit entries are created in their own transactions using
- * AuditDao.create(). If you need single-transaction atomicity, prefer auditing
- * inside the same Session/Transaction.
- */
 public class StaffDaoAuditDecorator {
 
     private final StaffDao delegate;
@@ -29,7 +21,6 @@ public class StaffDaoAuditDecorator {
         this(delegate, auditDao, false);
     }
 
-    // CREATE
     public Staff create(Staff s, String performedBy) {
         Staff created = delegate.create(s);
         try {
@@ -45,7 +36,6 @@ public class StaffDaoAuditDecorator {
         return created;
     }
 
-    // UPDATE
     public Staff update(Staff s, String performedBy) {
         Staff updated = delegate.update(s);
         try {
@@ -61,7 +51,6 @@ public class StaffDaoAuditDecorator {
         return updated;
     }
 
-    // DELETE
     public boolean deleteById(Long id, String performedBy) {
         boolean ok = delegate.deleteById(id);
         if (ok) {
@@ -79,7 +68,6 @@ public class StaffDaoAuditDecorator {
         return ok;
     }
 
-    // delegate read operations unchanged
     public Staff findById(Long id) {
         return delegate.findById(id);
     }
@@ -92,7 +80,6 @@ public class StaffDaoAuditDecorator {
         return delegate.findAll();
     }
 
-    // ---- helper ----
     private AuditLog buildAudit(String entityName, Long entityId, String action, String performedBy, String details) {
         AuditLog log = new AuditLog();
         log.setEntityName(entityName);

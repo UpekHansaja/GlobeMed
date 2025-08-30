@@ -11,7 +11,7 @@ public class Permission {
     private Long id;
 
     @Column(unique = true, nullable = false, length = 100)
-    private String name; // e.g., VIEW_PATIENTS, MANAGE_APPOINTMENTS
+    private String name;
 
     /**
      * @return the id
@@ -41,5 +41,4 @@ public class Permission {
         this.name = name;
     }
 
-    // toString()
 }

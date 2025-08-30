@@ -6,7 +6,6 @@ import lk.jiat.globemed.model.Staff;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class EditUserDialog extends JDialog {
 
@@ -29,39 +28,47 @@ public class EditUserDialog extends JDialog {
 
     private void initComponents() {
         setSize(400, 260);
-        setLayout(new BorderLayout(8,8));
+        setLayout(new BorderLayout(8, 8));
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(6,6,6,6);
+        gbc.insets = new Insets(6, 6, 6, 6);
         gbc.anchor = GridBagConstraints.WEST;
 
         JLabel lblName = new JLabel("Name:");
-        gbc.gridx = 0; gbc.gridy = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
         p.add(lblName, gbc);
         txtName = new JTextField(22);
-        gbc.gridx = 1; gbc.gridy = 0;
+        gbc.gridx = 1;
+        gbc.gridy = 0;
         p.add(txtName, gbc);
 
         JLabel lblEmail = new JLabel("Email:");
-        gbc.gridx = 0; gbc.gridy = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         p.add(lblEmail, gbc);
         txtEmail = new JTextField(22);
-        txtEmail.setEditable(false); // email as key, non-editable
-        gbc.gridx = 1; gbc.gridy = 1;
+        txtEmail.setEditable(false);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
         p.add(txtEmail, gbc);
 
         JLabel lblPassword = new JLabel("Password:");
-        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         p.add(lblPassword, gbc);
         txtPassword = new JPasswordField(22);
-        gbc.gridx = 1; gbc.gridy = 2;
+        gbc.gridx = 1;
+        gbc.gridy = 2;
         p.add(txtPassword, gbc);
 
         JLabel lblRole = new JLabel("Role:");
-        gbc.gridx = 0; gbc.gridy = 3;
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         p.add(lblRole, gbc);
         cmbRole = new JComboBox<>();
-        gbc.gridx = 1; gbc.gridy = 3;
+        gbc.gridx = 1;
+        gbc.gridy = 3;
         p.add(cmbRole, gbc);
 
         add(p, BorderLayout.CENTER);
@@ -91,7 +98,9 @@ public class EditUserDialog extends JDialog {
     }
 
     private void populateFields() {
-        if (editedStaff == null) return;
+        if (editedStaff == null) {
+            return;
+        }
         txtName.setText(editedStaff.getName());
         txtEmail.setText(editedStaff.getEmail());
         txtPassword.setText(editedStaff.getPassword());
