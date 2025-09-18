@@ -1,0 +1,117 @@
+@startuml Overview
+skinparam shadowing false
+skinparam dpi 180
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+package "ui" #DDFFDD {
+  class LoginForm <<UI>>
+  class AdminDashboardForm <<UI>>
+}
+
+package "mediator" #E6F3FF {
+  interface DashboardMediator
+  class AdminDashboardMediator
+}
+
+package "service" #FFF2CC {
+  class AppointmentService
+  class PatientService
+  class StaffService
+  class ReportService
+  class SecurityService
+  class TimeSlotFactory <<static>>
+}
+
+package "dao" #FDEDEC {
+  class PatientDao
+  class StaffDao
+  class StaffDaoAuditDecorator <<decorator>>
+  class AuditDao
+  class AppointmentDao
+  class BillingDao
+  class RoleDao
+}
+
+package "model" #F5F5F5 {
+  class Patient
+  class Staff
+  class Role
+  class Permission
+  class Appointment
+  class BillingRecord
+  class Prescription
+  class PrescriptionItem
+  class Medication
+  abstract class MedicalUnit
+  class Hospital
+  class Department
+  class PatientVitals
+  class NursingTask
+  class TimeSlot
+  class AuditLog
+}
+
+package "util" #EFEFEF {
+  class HibernateUtil <<singleton>>
+}
+
+' UI -> Mediator
+LoginForm --> DashboardMediator : interacts
+AdminDashboardForm --> AdminDashboardMediator : interacts
+DashboardMediator <|.. AdminDashboardMediator
+
+' Mediator -> Services
+AdminDashboardMediator --> StaffService
+AdminDashboardMediator --> PatientService
+AdminDashboardMediator --> AppointmentService
+AdminDashboardMediator --> ReportService
+AdminDashboardMediator --> SecurityService
+
+' Services -> DAOs
+AppointmentService --> AppointmentDao
+PatientService --> PatientDao
+StaffService --> StaffDaoAuditDecorator
+StaffService ..> StaffDao : uses rawDao
+StaffService --> RoleDao
+ReportService --> PatientDao
+ReportService --> StaffDao
+ReportService --> AppointmentDao
+ReportService --> BillingDao
+
+' Decorator chain
+StaffDaoAuditDecorator --> StaffDao : delegates
+StaffDaoAuditDecorator --> AuditDao : writes audits
+
+' DAOs -> Persistence
+PatientDao ..> HibernateUtil
+StaffDao ..> HibernateUtil
+AppointmentDao ..> HibernateUtil
+BillingDao ..> HibernateUtil
+RoleDao ..> HibernateUtil
+AuditDao ..> HibernateUtil
+
+' Entities relations (high-level)
+Patient "1" o-- "*" Appointment : appointments
+Staff  "1" o-- "*" Appointment : doctor
+Patient "1" o-- "*" BillingRecord
+Prescription "1" o-- "*" PrescriptionItem
+PrescriptionItem "*" --> "1" Medication
+Staff "1" --> "1" Role
+Role  "*" --> "*" Permission
+PatientVitals "*" --> "1" Patient
+PatientVitals "*" --> "1" Staff : nurse
+NursingTask "*" --> "0..1" Patient
+NursingTask "*" --> "1" Staff : assignedNurse
+
+' Composite
+MedicalUnit <|-- Hospital
+MedicalUnit <|-- Department
+Hospital o-- "*" MedicalUnit : units
+Department o-- "*" Staff : staff
+
+' Flyweight
+TimeSlotFactory ..> TimeSlot : creates/reuses
+
+@enduml

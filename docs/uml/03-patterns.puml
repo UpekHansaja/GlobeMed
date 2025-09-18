@@ -1,0 +1,112 @@
+@startuml Patterns
+skinparam shadowing false
+skinparam dpi 180
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+' Builder
+class AppointmentBuilder {
+  +withPatient(Patient)
+  +withDoctor(Staff)
+  +withDateTime(LocalDateTime)
+  +withStatus(String)
+  +withUrgency(boolean)
+  +asEmergency()
+  +asFollowUp()
+  +asRoutineCheckup()
+  +withId(Long)
+  +build(): Appointment
+  +reset(): AppointmentBuilder
+}
+class AppointmentDirector {
+  +createEmergencyAppointment(...)
+  +createRoutineAppointment(...)
+  +createUrgentAppointment(...)
+  +createFollowUpAppointment(...)
+  +createScheduledAppointment(...)
+  +createNextAvailableAppointment(...)
+  +createRescheduledAppointment(...)
+  +createWalkInAppointment(...)
+}
+AppointmentDirector --> AppointmentBuilder
+
+' Interpreter
+interface Expression {
+  +interpret(QueryContext): boolean
+}
+class QueryContext
+class AndExpression
+class OrExpression
+class NotExpression
+class PatientAgeExpression
+class PatientGenderExpression
+class AppointmentStatusExpression
+class QueryBuilder
+Expression <|.. AndExpression
+Expression <|.. OrExpression
+Expression <|.. NotExpression
+Expression <|.. PatientAgeExpression
+Expression <|.. PatientGenderExpression
+Expression <|.. AppointmentStatusExpression
+QueryBuilder ..> Expression
+QueryBuilder ..> QueryContext
+
+' Mediator
+interface DashboardMediator
+class AdminDashboardMediator
+DashboardMediator <|.. AdminDashboardMediator
+
+' Prototype
+abstract class AppointmentPrototype {
+  #type: String
+  #duration: int
+  #notes: String
+  #priority: String
+  #estimatedCost: double
+  #requiredEquipment: String
+  #preparationInstructions: String
+  +clone(): AppointmentPrototype
+  +displayInfo()
+}
+class RoutineCheckupPrototype
+class EmergencyPrototype
+class SurgeryPrototype
+AppointmentPrototype <|-- RoutineCheckupPrototype
+AppointmentPrototype <|-- EmergencyPrototype
+AppointmentPrototype <|-- SurgeryPrototype
+class AppointmentPrototypeRegistry {
+  -prototypes: Map<String, AppointmentPrototype>
+  +getInstance(): AppointmentPrototypeRegistry
+  +getPrototype(String): AppointmentPrototype
+  +registerPrototype(String, AppointmentPrototype)
+  +unregisterPrototype(String)
+  +displayAllPrototypes()
+}
+AppointmentPrototypeRegistry ..> AppointmentPrototype
+
+' Decorator + Memento
+class StaffDao
+class StaffDaoAuditDecorator
+class AuditDao
+class StaffService {
+  -mementoStack: Stack
+  +undoLastEdit(): boolean
+}
+StaffDaoAuditDecorator --> StaffDao : delegates
+StaffDaoAuditDecorator --> AuditDao : audit
+StaffService ..> StaffDao : rawDao
+StaffService ..> StaffDaoAuditDecorator
+
+' Flyweight
+class TimeSlot
+class TimeSlotFactory <<static>>
+TimeSlotFactory ..> TimeSlot : creates/reuses
+
+' Visitor
+interface ReportVisitor {
+  +visitStaffList(List<Staff>)
+}
+class CSVReportVisitor
+ReportVisitor <|.. CSVReportVisitor
+
+@enduml

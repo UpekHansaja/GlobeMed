@@ -1,0 +1,150 @@
+@startuml Domain
+skinparam shadowing false
+skinparam dpi 180
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+class Patient {
+  +Long id
+  +String firstName
+  +String lastName
+  +LocalDate dob
+  +String gender
+  +String contactNumber
+  +String address
+  +getFullName(): String
+}
+
+class Appointment {
+  +Long id
+  +LocalDateTime appointmentDateTime
+  +String status
+}
+
+class Staff {
+  +Long id
+  +String name
+  +String email
+  +String password
+}
+
+class Role {
+  +Long id
+  +String name
+}
+
+class Permission {
+  +Long id
+  +String name
+}
+
+class BillingRecord {
+  +Long id
+  +double amount
+  +String paymentMethod
+  +String status
+  +LocalDateTime createdAt
+}
+
+class Prescription {
+  +Long id
+  +LocalDateTime prescribedDate
+  +LocalDateTime dispensedDate
+  +String status
+  +String notes
+  +getTotalCost(): double
+  +canBeFilled(): boolean
+}
+
+class PrescriptionItem {
+  +Long id
+  +Integer quantity
+  +String dosageInstructions
+  +Integer durationDays
+  +String specialInstructions
+  +getItemTotal(): double
+  +canBeFilled(): boolean
+}
+
+class Medication {
+  +Long id
+  +String name
+  +String description
+  +String category
+  +String manufacturer
+  +Double unitPrice
+  +Integer stockQuantity
+  +Integer minimumStock
+  +String dosageForm
+  +String strength
+  +LocalDate expiryDate
+  +String batchNumber
+  +String status
+  +isLowStock(): boolean
+  +isExpired(): boolean
+  +isExpiringSoon(): boolean
+  +dispense(int)
+  +restock(int)
+}
+
+class PatientVitals {
+  +Long id
+  +LocalDateTime recordedAt
+  +Double temperature
+  +Integer systolicBP
+  +Integer diastolicBP
+  +Integer heartRate
+  +Integer respiratoryRate
+  +Double oxygenSaturation
+  +Double weight
+  +Double height
+  +String notes
+  +getBloodPressure(): String
+  +isTemperatureFever(): boolean
+  +isBloodPressureHigh(): boolean
+  +isHeartRateAbnormal(): boolean
+}
+
+class NursingTask {
+  +Long id
+  +String title
+  +String description
+  +LocalDateTime createdAt
+  +LocalDateTime dueDateTime
+  +LocalDateTime completedAt
+  +String priority
+  +String status
+  +String taskType
+  +String completionNotes
+  +isOverdue(): boolean
+  +isHighPriority(): boolean
+  +markAsCompleted(String)
+  +markAsInProgress()
+  +cancel(String)
+}
+
+class AuditLog {
+  +Long id
+  +String entityName
+  +Long entityId
+  +String action
+  +String performedBy
+  +LocalDateTime performedAt
+  +String details
+}
+
+' Associations
+Patient "1" o-- "*" Appointment
+Appointment "*" --> "1" Patient : patient
+Appointment "*" --> "1" Staff : doctor
+Patient "1" o-- "*" BillingRecord
+Prescription "1" o-- "*" PrescriptionItem
+PrescriptionItem "*" --> "1" Medication
+Staff "1" --> "1" Role
+Role  "*" --> "*" Permission
+PatientVitals "*" --> "1" Patient
+PatientVitals "*" --> "1" Staff : nurse
+NursingTask "*" --> "0..1" Patient
+NursingTask "*" --> "1" Staff : assignedNurse
+
+@enduml

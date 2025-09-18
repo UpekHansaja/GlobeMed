@@ -1,0 +1,49 @@
+@startuml Architecture
+skinparam shadowing false
+skinparam dpi 180
+skinparam componentStyle rectangle
+skinparam linetype ortho
+
+package UI {
+  [LoginForm]
+  [AdminDashboardForm]
+}
+
+package Mediator {
+  [DashboardMediator <<interface>>]
+  [AdminDashboardMediator]
+}
+
+package Services {
+  [AppointmentService]
+  [PatientService]
+  [StaffService]
+  [ReportService]
+  [SecurityService]
+  [TimeSlotFactory <<static>>]
+}
+
+package DAO {
+  [PatientDao]
+  [StaffDao]
+  [StaffDaoAuditDecorator <<decorator>>]
+  [AuditDao]
+  [AppointmentDao]
+  [BillingDao]
+  [RoleDao]
+}
+
+package Persistence {
+  [HibernateUtil <<singleton>>]
+}
+
+UI --> Mediator
+Mediator --> Services
+Services --> DAO
+DAO ..> Persistence
+
+[StaffService] ..> [StaffDao] : rawDao
+[StaffDaoAuditDecorator] --> [StaffDao] : delegates
+[StaffDaoAuditDecorator] --> [AuditDao]
+
+@enduml

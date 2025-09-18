@@ -82,7 +82,29 @@ public class DoctorDashboardForm extends JFrame {
         patientTable = new JTable(patientTableModel);
 
         JScrollPane patientScroll = new JScrollPane(patientTable);
+
+        // Patient management buttons
+        JPanel patientBtnPanel = new JPanel();
+        JButton btnAddPatient = new JButton("Add Patient");
+        JButton btnViewPatient = new JButton("View Details");
+        JButton btnRefreshPatients = new JButton("Refresh");
+        JButton btnMyPatients = new JButton("My Patients Only");
+        JButton btnAllPatients = new JButton("All Patients");
+
+        btnAddPatient.addActionListener(this::onAddPatient);
+        btnViewPatient.addActionListener(this::onViewPatient);
+        btnRefreshPatients.addActionListener(e -> loadPatients());
+        btnMyPatients.addActionListener(e -> loadMyPatients());
+        btnAllPatients.addActionListener(e -> loadPatients());
+
+        patientBtnPanel.add(btnAddPatient);
+        patientBtnPanel.add(btnViewPatient);
+        patientBtnPanel.add(btnRefreshPatients);
+        patientBtnPanel.add(btnMyPatients);
+        patientBtnPanel.add(btnAllPatients);
+
         patientsPanel.add(patientScroll, BorderLayout.CENTER);
+        patientsPanel.add(patientBtnPanel, BorderLayout.SOUTH);
 
         tabbedPane.addTab("Appointments", appointmentsPanel);
         tabbedPane.addTab("Patients", patientsPanel);
@@ -113,6 +135,20 @@ public class DoctorDashboardForm extends JFrame {
 
     private void loadPatients() {
         patientTableModel.setRowCount(0);
+        // Show all patients instead of just those with appointments
+        List<Patient> patients = patientService.findAll();
+        for (Patient p : patients) {
+            patientTableModel.addRow(new Object[]{
+                p.getId(),
+                p.getFullName(),
+                p.getContactNumber()
+            });
+        }
+    }
+    
+    private void loadMyPatients() {
+        patientTableModel.setRowCount(0);
+        // Show only patients who have appointments with this doctor
         List<Patient> patients = patientService.findByDoctor(loggedInDoctor.getId());
         for (Patient p : patients) {
             patientTableModel.addRow(new Object[]{
@@ -168,6 +204,50 @@ public class DoctorDashboardForm extends JFrame {
             }
         }
 
+    }
+
+    private void onAddPatient(ActionEvent e) {
+        AddPatientDialog dialog = new AddPatientDialog(this);
+        dialog.setVisible(true);
+
+        if (dialog.isSaved()) {
+            loadPatients(); // Refresh the patient list
+            JOptionPane.showMessageDialog(this,
+                    "Patient added successfully!",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    private void onViewPatient(ActionEvent e) {
+        int row = patientTable.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a patient first.");
+            return;
+        }
+
+        Long patientId = (Long) patientTableModel.getValueAt(row, 0);
+        Patient patient = patientService.findById(patientId);
+
+        if (patient != null) {
+            String info = String.format(
+                    "Patient Details:\n\n"
+                    + "ID: %d\n"
+                    + "Name: %s\n"
+                    + "Phone: %s\n"
+                    + "Date of Birth: %s\n"
+                    + "Gender: %s\n"
+                    + "Address: %s\n",
+                    patient.getId(),
+                    patient.getFullName(),
+                    patient.getContactNumber(),
+                    patient.getDob(),
+                    patient.getGender(),
+                    patient.getAddress() != null ? patient.getAddress() : "N/A"
+            );
+
+            JOptionPane.showMessageDialog(this, info, "Patient Details", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     private void logout() {
